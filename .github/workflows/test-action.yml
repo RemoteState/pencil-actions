@@ -1,0 +1,22 @@
+name: Test Design Review Action
+
+on:
+  pull_request:
+    paths:
+      - '**/*.pen'
+
+jobs:
+  design-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Design Review (Local Action)
+        uses: ./  # Uses the action from this repo
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
