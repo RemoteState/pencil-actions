@@ -1,0 +1,2333 @@
+{
+  "version": "2.7",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": 0,
+      "y": 0,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "frame",
+      "id": "fMoxx",
+      "x": 0,
+      "y": 0,
+      "name": "SeekHealth Landing Page",
+      "width": 1440,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "gJiCu",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 90,
+          "padding": [
+            20,
+            95
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "OjdDu",
+              "name": "Logo",
+              "width": 200,
+              "height": 46,
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "GFM3g",
+                  "name": "logoIcon",
+                  "width": 40,
+                  "height": 40,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "Wj0wb",
+                      "x": 0,
+                      "y": 12,
+                      "name": "logoGreen",
+                      "fill": "#22C55E",
+                      "width": 14,
+                      "height": 14
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "rkY0A",
+                      "x": 13,
+                      "y": 0,
+                      "name": "logoOrange",
+                      "fill": "#F97316",
+                      "width": 14,
+                      "height": 14
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "sXdXF",
+                      "x": 26,
+                      "y": 12,
+                      "name": "logoBlue",
+                      "fill": "#3B82F6",
+                      "width": 14,
+                      "height": 14
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "CkLbD",
+                      "x": 13,
+                      "y": 24,
+                      "name": "logoRed",
+                      "fill": "#EF4444",
+                      "width": 14,
+                      "height": 14
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "GCgRk",
+                  "name": "logoTextSeek",
+                  "fill": "#1A3066",
+                  "content": "seek",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "ZugLP",
+                  "name": "logoTextHealth",
+                  "fill": "#1A3066",
+                  "content": "health",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VanfS",
+              "name": "Nav Links",
+              "gap": 32,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "RsSYA",
+                  "name": "aboutLink",
+                  "fill": "#546681",
+                  "content": "About",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "mjPoe",
+                  "name": "loginLink",
+                  "fill": "#546681",
+                  "content": "Login",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bkLjG",
+          "name": "Hero Section",
+          "width": "fill_container",
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 135,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#F0F4F8",
+                "position": 0
+              },
+              {
+                "color": "#FFFFFF",
+                "position": 0.5
+              }
+            ]
+          },
+          "gap": 60,
+          "padding": [
+            60,
+            95,
+            80,
+            95
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "3HrhG",
+              "name": "Hero Content",
+              "width": 450,
+              "layout": "vertical",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "OyJam",
+                  "name": "heroHeadline",
+                  "fill": "#1A3066",
+                  "textGrowth": "fixed-width",
+                  "width": 450,
+                  "content": "All clinical work, clearly organized in one place.",
+                  "lineHeight": 1,
+                  "fontFamily": "Inter",
+                  "fontSize": 45,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "KBOL2",
+                  "name": "heroDescription",
+                  "fill": "#546681",
+                  "textGrowth": "fixed-width",
+                  "width": 420,
+                  "content": "Seek Health keeps tasks and hand-offs visible and shared, so teams stay aligned and nothing slips through the cracks.\n\nWork seamlessly - on the go from your phone or while at your desk.",
+                  "lineHeight": 1.4,
+                  "fontFamily": "Inter",
+                  "fontSize": 17,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "b6Bwz",
+                  "name": "CTA Button",
+                  "fill": "#484DFF",
+                  "cornerRadius": 45,
+                  "padding": [
+                    18,
+                    35
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "sFoeU",
+                      "name": "ctaText",
+                      "fill": "#FFFFFF",
+                      "content": "Request a demo",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "aY1AO",
+              "name": "Hero Image",
+              "metadata": {
+                "type": "unsplash",
+                "username": "maks_d",
+                "link": "https://unsplash.com/@maks_d",
+                "author": "maks_d"
+              },
+              "width": 535,
+              "height": 300,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1755189118414-14c8dacdb082?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk2OTk4NzN8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 8
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "B3nHj",
+          "name": "What Section",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            80,
+            95
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "Uo4Rx",
+              "name": "whatTitle",
+              "fill": "#1A3066",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "What Seek Health Does",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "gXjyp",
+              "name": "whatIntro",
+              "fill": "#546681",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Clinical teams juggle hundreds of tasks across shifts, roles, and systems.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "4bRln",
+              "name": "whatDesc",
+              "fill": "#546681",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Seek Health gives teams one shared workspace for clinical work - so everyone knows:",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "7DqVh",
+              "name": "whatList",
+              "fill": "#F7F9FC",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 12,
+              "padding": [
+                24,
+                32
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "DWXAf",
+                  "name": "checkIcon1",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "5dMhr",
+                      "name": "checkMark1",
+                      "width": 24,
+                      "height": 24,
+                      "fill": "#22C55E",
+                      "cornerRadius": 12,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "TCagx",
+                          "name": "checkText1",
+                          "fill": "#FFFFFF",
+                          "content": "✓",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "fdiO4",
+                      "name": "label1",
+                      "fill": "#1A3066",
+                      "content": "What's been done",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "iVCKB",
+                  "name": "checkIcon2",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "9TIWo",
+                      "name": "checkMark2",
+                      "width": 24,
+                      "height": 24,
+                      "fill": "#22C55E",
+                      "cornerRadius": 12,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wVwQv",
+                          "name": "checkText2",
+                          "fill": "#FFFFFF",
+                          "content": "✓",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "2BOdU",
+                      "name": "label2",
+                      "fill": "#1A3066",
+                      "content": "What still needs to happen",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ZggRF",
+                  "name": "checkIcon3",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "G8L9m",
+                      "name": "checkMark3",
+                      "width": 24,
+                      "height": 24,
+                      "fill": "#22C55E",
+                      "cornerRadius": 12,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "FfqtY",
+                          "name": "checkText3",
+                          "fill": "#FFFFFF",
+                          "content": "✓",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "nfgf2",
+                      "name": "label3",
+                      "fill": "#1A3066",
+                      "content": "Who's responsible",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "8GAV9",
+              "name": "whatTagline",
+              "fill": "#484DFF",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "No chasing. No guesswork. Just clear, coordinated work.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "33T6A",
+          "name": "Capability Cloud",
+          "width": "fill_container",
+          "fill": "#F7F9FC",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            60,
+            95
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "uEgX0",
+              "name": "capTitle",
+              "fill": "#1A3066",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "What Lives Inside Seek Health",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 32,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "ldNDK",
+              "name": "capSubtitle",
+              "fill": "#546681",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Seek Health coordinates real clinical work - across people, time, and teams.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "uM2Cm",
+              "name": "highlightPill",
+              "fill": "#484DFF",
+              "cornerRadius": 24,
+              "padding": [
+                12,
+                24
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "eCZC1",
+                  "name": "highlightText",
+                  "fill": "#FFFFFF",
+                  "content": "Voice-captured tasks",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tvKmW",
+              "name": "Pill Cloud",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ZYB3r",
+                  "name": "pillRow1",
+                  "gap": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "sxFbS",
+                      "name": "pill1",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "nHJCD",
+                          "name": "pillText1",
+                          "fill": "#546681",
+                          "content": "Task creation & ownership",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "JEijX",
+                      "name": "pill2",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ZTZK3",
+                          "name": "pillText2",
+                          "fill": "#546681",
+                          "content": "Task reassignment",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "jVBqz",
+                      "name": "pill3",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "36tcY",
+                          "name": "pillText3",
+                          "fill": "#546681",
+                          "content": "Shift handoffs",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "IbN5P",
+                      "name": "pill4",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ux5T1",
+                          "name": "pillText4",
+                          "fill": "#546681",
+                          "content": "Pending task visibility",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ULWtD",
+                  "name": "pillRow2",
+                  "gap": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "yhh3G",
+                      "name": "pill5",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ccKuT",
+                          "name": "pillText5",
+                          "fill": "#546681",
+                          "content": "Follow-ups & reminders",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VIJGJ",
+                      "name": "pill6",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ck8D3",
+                          "name": "pillText6",
+                          "fill": "#546681",
+                          "content": "Priority & urgency levels",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "O2dh8",
+                      "name": "pill7",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "KjEzA",
+                          "name": "pillText7",
+                          "fill": "#546681",
+                          "content": "Role-based task views",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JcxL9",
+                  "name": "pillRow3",
+                  "gap": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "oyWc7",
+                      "name": "pill8",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jEZiU",
+                          "name": "pillText8",
+                          "fill": "#546681",
+                          "content": "Cross-team visibility",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "F8x40",
+                      "name": "pill9",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "JUxc5",
+                          "name": "pillText9",
+                          "fill": "#546681",
+                          "content": "Real-time task updates",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "HSBLh",
+                      "name": "pill10",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "3L0dJ",
+                          "name": "pillText10",
+                          "fill": "#546681",
+                          "content": "Mobile task capture",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Ck9QO",
+                      "name": "pill11",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "C9Uxo",
+                          "name": "pillText11",
+                          "fill": "#546681",
+                          "content": "Desktop workflows",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4qBke",
+                  "name": "pillRow4",
+                  "gap": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "HE9Y8",
+                      "name": "pill12",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "R0bR5",
+                          "name": "pillText12",
+                          "fill": "#546681",
+                          "content": "Workload visibility",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bK4NL",
+                      "name": "pill13",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "eX67Z",
+                          "name": "pillText13",
+                          "fill": "#546681",
+                          "content": "Audit trails",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "meHOi",
+                      "name": "pill14",
+                      "fill": "#E8F0F8",
+                      "cornerRadius": 20,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "BtVkS",
+                          "name": "pillText14",
+                          "fill": "#546681",
+                          "content": "Operational insights",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "2AKTe",
+              "name": "capFooter",
+              "fill": "#1A3066",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Built for real clinical environments.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "JE2Fu",
+          "name": "Testimonial Section",
+          "width": "fill_container",
+          "fill": "#E8F0F8",
+          "gap": 80,
+          "padding": [
+            60,
+            95
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "kbLxS",
+              "name": "Headshot",
+              "metadata": {
+                "type": "unsplash",
+                "username": "kozyrka_kate",
+                "link": "https://unsplash.com/@kozyrka_kate",
+                "author": "Kate Kozyrka"
+              },
+              "clip": true,
+              "width": 200,
+              "height": 200,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1562337404-3044c84ac061?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk2OTk4MDN8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 100
+            },
+            {
+              "type": "frame",
+              "id": "MBrBQ",
+              "name": "Quote Content",
+              "width": 550,
+              "layout": "vertical",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "LaGY5",
+                  "name": "quoteIcon",
+                  "fill": "#F59E0B",
+                  "content": "❝",
+                  "fontFamily": "Inter",
+                  "fontSize": 50,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "kjdJy",
+                  "name": "quoteText",
+                  "fill": "#546681",
+                  "textGrowth": "fixed-width",
+                  "width": 520,
+                  "content": "Before Seek Health, we relied on notes, memory, and constant check-ins. Now everyone can see the work clearly - across shifts and roles. It's changed how our team operates day to day, decreased our length of stays, and improved our clinical morale.",
+                  "lineHeight": 1.4,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal",
+                  "fontStyle": "italic"
+                },
+                {
+                  "type": "frame",
+                  "id": "QcXZ7",
+                  "name": "quoteAttribution",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SR7dQ",
+                      "name": "attrTitle",
+                      "fill": "#1A3066",
+                      "content": "— Hospital CEO",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qLOuO",
+                      "name": "attrDept",
+                      "fill": "#546681",
+                      "content": "Hospital Partner",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kSeU0",
+          "name": "Metrics Section",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            80,
+            95
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "SHgJW",
+              "name": "metricsTitle",
+              "fill": "#1A3066",
+              "textGrowth": "fixed-width",
+              "width": 800,
+              "content": "Across environments, Seek Health has helped teams achieve:",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "12B1M",
+              "name": "metricsGrid",
+              "gap": 40,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "sLIQY",
+                  "name": "metric1",
+                  "width": 250,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Rt4fT",
+                      "name": "metric1Value",
+                      "fill": "#484DFF",
+                      "content": "20–30%",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "HF1vg",
+                      "name": "metric1Label",
+                      "fill": "#546681",
+                      "textGrowth": "fixed-width",
+                      "width": 220,
+                      "content": "reduction in time spent coordinating work",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kffny",
+                  "name": "metric2",
+                  "width": 250,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "3KhhH",
+                      "name": "metric2Value",
+                      "fill": "#484DFF",
+                      "content": "3+ hours",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Izefi",
+                      "name": "metric2Label",
+                      "fill": "#546681",
+                      "textGrowth": "fixed-width",
+                      "width": 220,
+                      "content": "saved per clinician per week (12 hour shifts)",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "M1q5O",
+                  "name": "metric3",
+                  "width": 250,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XUzsm",
+                      "name": "metric3Value",
+                      "fill": "#484DFF",
+                      "content": "Fewer",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "XuhKq",
+                      "name": "metric3Label",
+                      "fill": "#546681",
+                      "textGrowth": "fixed-width",
+                      "width": 220,
+                      "content": "missed or delayed tasks, especially during shift changes",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "W7ru9",
+              "name": "metricsFootnote",
+              "fill": "#9CA3AF",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Measured during live clinical pilots across hospital and care delivery settings.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal",
+              "fontStyle": "italic"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "UnsHD",
+          "name": "Final CTA",
+          "width": "fill_container",
+          "fill": "#1A3066",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            80,
+            95
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "qaPo5",
+              "name": "ctaHeadline",
+              "fill": "#FFFFFF",
+              "content": "Clinical work is complex.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "oCjq0",
+              "name": "ctaSubline",
+              "fill": "#FFFFFF",
+              "content": "Your systems shouldn't be.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "9vYw7",
+              "name": "ctaBtn",
+              "fill": "#484DFF",
+              "cornerRadius": 30,
+              "padding": [
+                16,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "U9XW2",
+                  "name": "ctaBtnText",
+                  "fill": "#FFFFFF",
+                  "content": "See how Seek Health works →",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ItTVC",
+          "name": "Footer",
+          "width": "fill_container",
+          "fill": "#F7F9FC",
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            50,
+            95,
+            30,
+            95
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "Yp1Z2",
+              "name": "footerTop",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "2oj0p",
+                  "name": "Footer Logo",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "yISqM",
+                      "name": "footerLogoIcon",
+                      "width": 36,
+                      "height": 36,
+                      "layout": "none",
+                      "children": [
+                        {
+                          "type": "ellipse",
+                          "id": "5nIWK",
+                          "x": 0,
+                          "y": 10,
+                          "name": "fLogoGreen",
+                          "fill": "#22C55E",
+                          "width": 12,
+                          "height": 12
+                        },
+                        {
+                          "type": "ellipse",
+                          "id": "sFMmB",
+                          "x": 12,
+                          "y": 0,
+                          "name": "fLogoOrange",
+                          "fill": "#F97316",
+                          "width": 12,
+                          "height": 12
+                        },
+                        {
+                          "type": "ellipse",
+                          "id": "LCNAv",
+                          "x": 24,
+                          "y": 10,
+                          "name": "fLogoBlue",
+                          "fill": "#3B82F6",
+                          "width": 12,
+                          "height": 12
+                        },
+                        {
+                          "type": "ellipse",
+                          "id": "ZbcZo",
+                          "x": 12,
+                          "y": 22,
+                          "name": "fLogoRed",
+                          "fill": "#EF4444",
+                          "width": 12,
+                          "height": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "F1k5H",
+                      "name": "footerLogoSeek",
+                      "fill": "#1A3066",
+                      "content": "seek",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "DoBB6",
+                      "name": "footerLogoHealth",
+                      "fill": "#1A3066",
+                      "content": "health",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "6QiK7",
+                  "name": "footerTagline",
+                  "fill": "#1A3066",
+                  "content": "Better coordination changes everything.",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "IcfSM",
+              "name": "footerBottom",
+              "width": "fill_container",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "qLCAG",
+                  "name": "copyright",
+                  "fill": "#9CA3AF",
+                  "content": "hello@seekhealth.ai  •  © 2026 Seek Health AI",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "WfxsJ",
+      "x": 1540,
+      "y": 0,
+      "name": "About Page",
+      "width": 1440,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "OJcdQ",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 90,
+          "padding": [
+            20,
+            95
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "iEZoA",
+              "name": "Logo",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "umwJm",
+                  "name": "aboutLogoIcon",
+                  "width": 40,
+                  "height": 40,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "nmCTs",
+                      "x": 0,
+                      "y": 12,
+                      "name": "aLogoGreen",
+                      "fill": "#22C55E",
+                      "width": 14,
+                      "height": 14
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "53Epu",
+                      "x": 13,
+                      "y": 0,
+                      "name": "aLogoOrange",
+                      "fill": "#F97316",
+                      "width": 14,
+                      "height": 14
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "6BVg3",
+                      "x": 26,
+                      "y": 12,
+                      "name": "aLogoBlue",
+                      "fill": "#3B82F6",
+                      "width": 14,
+                      "height": 14
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "4Hk5O",
+                      "x": 13,
+                      "y": 24,
+                      "name": "aLogoRed",
+                      "fill": "#EF4444",
+                      "width": 14,
+                      "height": 14
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "8baN8",
+                  "name": "aboutLogoSeek",
+                  "fill": "#1A3066",
+                  "content": "seek",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "UleMx",
+                  "name": "aboutLogoHealth",
+                  "fill": "#1A3066",
+                  "content": "health",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QZEmB",
+              "name": "aboutNavLinks",
+              "gap": 32,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "SnDCo",
+                  "name": "aboutHomeLink",
+                  "fill": "#546681",
+                  "content": "Home",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "Rxwpo",
+                  "name": "aboutLoginLink",
+                  "fill": "#546681",
+                  "content": "Login",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qK5Ex",
+          "name": "About Hero",
+          "width": "fill_container",
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 180,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#1A3066",
+                "position": 0
+              },
+              {
+                "color": "#2D4A8C",
+                "position": 1
+              }
+            ]
+          },
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            80,
+            200
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "8iS7J",
+              "name": "aboutHeroLabel",
+              "fill": "#484DFF",
+              "content": "ABOUT US",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "600",
+              "letterSpacing": 3
+            },
+            {
+              "type": "text",
+              "id": "pAtUL",
+              "name": "aboutHeroTitle",
+              "fill": "#FFFFFF",
+              "content": "Why We Built Seek Health",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 48,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "iwnNk",
+              "name": "aboutHeroDesc",
+              "fill": "#E8F0F8",
+              "textGrowth": "fixed-width",
+              "width": 700,
+              "content": "Seek Health was built by people who have lived inside healthcare systems.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "vx372",
+          "name": "Story Section",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            80,
+            200
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "hBoH7",
+              "name": "storyIntro",
+              "fill": "#546681",
+              "textGrowth": "fixed-width",
+              "width": 800,
+              "content": "We've seen firsthand how care breaks down - not because of bad intent, but because work is fragmented, invisible, and hard to coordinate in real time.",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "guLdA",
+              "name": "painPoints",
+              "fill": "#FEF3C7",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 16,
+              "padding": [
+                32,
+                48
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "zWxt2",
+                  "name": "pain1",
+                  "fill": "#92400E",
+                  "content": "Important tasks get buried.",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "9LlYE",
+                  "name": "pain2",
+                  "fill": "#92400E",
+                  "content": "Handoffs lose context.",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "tYQyu",
+                  "name": "pain3",
+                  "fill": "#92400E",
+                  "textGrowth": "fixed-width",
+                  "width": 500,
+                  "content": "Teams do their best, but systems don't support how work actually happens.",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "WquKD",
+              "name": "storySolution",
+              "fill": "#1A3066",
+              "content": "So we built something different.",
+              "fontFamily": "Inter",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "HgOHW",
+              "name": "storyMission",
+              "fill": "#484DFF",
+              "textGrowth": "fixed-width",
+              "width": 700,
+              "content": "Seek Health exists to make clinical work visible, shared, and easier to carry together - so teams can focus on patients, not chasing tasks.",
+              "lineHeight": 1.5,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hYniJ",
+          "name": "Vision Section",
+          "width": "fill_container",
+          "fill": "#F7F9FC",
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            80,
+            95
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "O40iq",
+              "name": "visionTitle",
+              "fill": "#1A3066",
+              "content": "Our Vision",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "zzTVt",
+              "name": "visionSubtitle",
+              "fill": "#546681",
+              "content": "We believe healthcare works best when teams work as one.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "DOJEg",
+              "name": "visionGrid",
+              "gap": 32,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "NrVK5",
+                  "name": "vision1",
+                  "width": 300,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    32,
+                    24
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "f9YTt",
+                      "name": "vision1Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#DBEAFE",
+                      "cornerRadius": 24,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "c1073",
+                          "name": "vision1IconText",
+                          "fill": "#3B82F6",
+                          "content": "✓",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "fo4h8",
+                      "name": "vision1Text",
+                      "fill": "#1A3066",
+                      "textGrowth": "fixed-width",
+                      "width": 250,
+                      "content": "Clinical work is clear, not scattered",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Mte68",
+                  "name": "vision2",
+                  "width": 300,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    32,
+                    24
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "xyZjF",
+                      "name": "vision2Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#DBEAFE",
+                      "cornerRadius": 24,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "RREpG",
+                          "name": "vision2IconText",
+                          "fill": "#3B82F6",
+                          "content": "♥",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "b2cDs",
+                      "name": "vision2Text",
+                      "fill": "#1A3066",
+                      "textGrowth": "fixed-width",
+                      "width": 250,
+                      "content": "Teams are aligned, not overloaded",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "K0klj",
+                  "name": "vision3",
+                  "width": 300,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    32,
+                    24
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ZwP9P",
+                      "name": "vision3Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#DBEAFE",
+                      "cornerRadius": 24,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "2ZjTR",
+                          "name": "vision3IconText",
+                          "fill": "#3B82F6",
+                          "content": "★",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "mt2gu",
+                      "name": "vision3Text",
+                      "fill": "#1A3066",
+                      "textGrowth": "fixed-width",
+                      "width": 250,
+                      "content": "No one misses a beat - even in the most complex environments",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "aJ3VC",
+          "name": "Founders Section",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 48,
+          "padding": [
+            80,
+            95
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "oRx6b",
+              "name": "foundersTitle",
+              "fill": "#1A3066",
+              "content": "Founders",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "o9MFy",
+              "name": "foundersGrid",
+              "gap": 60,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "u5UJ6",
+                  "name": "founder1",
+                  "width": 500,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "yoJYz",
+                      "name": "founder1Photo",
+                      "metadata": {
+                        "type": "unsplash",
+                        "username": "itsbrunoagain",
+                        "link": "https://unsplash.com/@itsbrunoagain",
+                        "author": "Bruno Ngarukiye"
+                      },
+                      "clip": true,
+                      "width": 180,
+                      "height": 180,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1730715145675-8186093365fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MDA3MTJ8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 90
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kH7yM",
+                      "name": "founder1Info",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "MwmKM",
+                          "name": "founder1Name",
+                          "fill": "#1A3066",
+                          "content": "Kim de los Reyes",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "MtVU0",
+                          "name": "founder1Role",
+                          "fill": "#484DFF",
+                          "content": "Founder & CEO",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "qalHn",
+                      "name": "founder1Bio",
+                      "fill": "#546681",
+                      "textGrowth": "fixed-width",
+                      "width": 450,
+                      "content": "Kim de los Reyes is a healthcare operator and technologist with hands-on experience spanning hospital ownership, frontline clinical care, and complex health system operations.\n\nAfter working in high-acuity care environments, Kim saw that many failures in healthcare stem not from clinical decisions, but from broken coordination - missed tasks, unclear ownership, and fragile handoffs.\n\nShe founded Seek Health to build a new operational layer for clinical work - one that makes tasks visible, teams aligned, and care more reliable in complex, real-world environments.",
+                      "lineHeight": 1.6,
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "5nOjs",
+                  "name": "founder2",
+                  "width": 500,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "hiNJE",
+                      "name": "founder2Photo",
+                      "metadata": {
+                        "type": "unsplash",
+                        "username": "mdesign85",
+                        "link": "https://unsplash.com/@mdesign85",
+                        "author": "MD Duran"
+                      },
+                      "clip": true,
+                      "width": 180,
+                      "height": 180,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1676694138510-f4eec9be9f26?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MDA3MTN8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 90
+                    },
+                    {
+                      "type": "frame",
+                      "id": "okZgS",
+                      "name": "founder2Info",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vpBlP",
+                          "name": "founder2Name",
+                          "fill": "#1A3066",
+                          "content": "Dr. Rami Amin",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "JwGfC",
+                          "name": "founder2Role",
+                          "fill": "#484DFF",
+                          "content": "Chief Commercial Officer",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "BZoSe",
+                      "name": "founder2Bio",
+                      "fill": "#546681",
+                      "textGrowth": "fixed-width",
+                      "width": 450,
+                      "content": "Rami is a global digital systems leader with deep experience spanning healthcare, technology, and economic development. He has led large-scale digital transformation initiatives at the World Bank and in collaboration with the IFC.\n\nHis work has focused on AI, data governance, cloud infrastructure, digital policy, and the design of technology-enabled systems in emerging markets.\n\nAt Seek Health, Rami leads commercial strategy and partnerships, bringing a systems-level perspective to scaling technology that delivers real, measurable value in complex healthcare environments globally.",
+                      "lineHeight": 1.6,
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "51zcg",
+          "name": "Different Section",
+          "width": "fill_container",
+          "fill": "#1A3066",
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            80,
+            200
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "Yewzn",
+              "name": "diffTitle",
+              "fill": "#FFFFFF",
+              "content": "Why We're Different",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "SUe7U",
+              "name": "diffSubtitle",
+              "fill": "#E8F0F8",
+              "textGrowth": "fixed-width",
+              "width": 600,
+              "content": "We don't ask teams to work harder.\nWe give them a system that works with them.",
+              "lineHeight": 1.5,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "OkVuC",
+              "name": "diffPills",
+              "gap": 24,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "gUZ5A",
+                  "name": "diffPill1",
+                  "fill": "#484DFF",
+                  "cornerRadius": 24,
+                  "padding": [
+                    12,
+                    24
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bPb5L",
+                      "name": "diffPillText1",
+                      "fill": "#FFFFFF",
+                      "content": "Clinician-informed",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "7yoO1",
+                  "name": "diffPill2",
+                  "fill": "#484DFF",
+                  "cornerRadius": 24,
+                  "padding": [
+                    12,
+                    24
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "v0TVc",
+                      "name": "diffPillText2",
+                      "fill": "#FFFFFF",
+                      "content": "Workflow-first",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xRfaF",
+                  "name": "diffPill3",
+                  "fill": "#484DFF",
+                  "cornerRadius": 24,
+                  "padding": [
+                    12,
+                    24
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "zoIqr",
+                      "name": "diffPillText3",
+                      "fill": "#FFFFFF",
+                      "content": "Built for real environments",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "P3fjr",
+          "name": "Footer",
+          "width": "fill_container",
+          "fill": "#F7F9FC",
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            50,
+            95,
+            30,
+            95
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "r5XSp",
+              "name": "aboutFooterTop",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "FKL1g",
+                  "name": "aboutFooterLogoFrame",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "j1N8E",
+                      "name": "aboutFooterLogoIcon",
+                      "width": 32,
+                      "height": 32,
+                      "layout": "none",
+                      "children": [
+                        {
+                          "type": "ellipse",
+                          "id": "l0BxV",
+                          "x": 0,
+                          "y": 10,
+                          "name": "afLogoGreen",
+                          "fill": "#22C55E",
+                          "width": 12,
+                          "height": 12
+                        },
+                        {
+                          "type": "ellipse",
+                          "id": "bwCaV",
+                          "x": 10,
+                          "y": 0,
+                          "name": "afLogoOrange",
+                          "fill": "#F97316",
+                          "width": 12,
+                          "height": 12
+                        },
+                        {
+                          "type": "ellipse",
+                          "id": "NAdyD",
+                          "x": 20,
+                          "y": 10,
+                          "name": "afLogoBlue",
+                          "fill": "#3B82F6",
+                          "width": 12,
+                          "height": 12
+                        },
+                        {
+                          "type": "ellipse",
+                          "id": "syKfl",
+                          "x": 10,
+                          "y": 20,
+                          "name": "afLogoRed",
+                          "fill": "#EF4444",
+                          "width": 12,
+                          "height": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "v4icq",
+                      "name": "aboutFooterLogoSeek",
+                      "fill": "#1A3066",
+                      "content": "seek",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "LvalB",
+                      "name": "aboutFooterLogoHealth",
+                      "fill": "#1A3066",
+                      "content": "health",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "30sWo",
+                  "name": "aboutFooterTagline",
+                  "fill": "#1A3066",
+                  "content": "Better coordination changes everything.",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "AXu1j",
+              "name": "aboutFooterBottom",
+              "width": "fill_container",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "v1K2l",
+                  "name": "aboutCopyright",
+                  "fill": "#9CA3AF",
+                  "content": "hello@seekhealth.ai  •  © 2026 Seek Health AI",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+# Example: Basic Design Review (Metadata Mode)
+# This workflow runs without an API key, showing frame names and structure
+
+name: Design Review (Basic)
+on:
+  pull_request:
+    paths:
+      - '**/*.pen'
+
+jobs:
+  design-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Design Review
+        uses: remotestate/pencil-actions@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

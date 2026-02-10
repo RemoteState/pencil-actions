@@ -1,0 +1,73 @@
+name: 'Pencil Design Review'
+description: 'Generate visual previews of .pen design files and post them as PR comments for design review'
+author: 'RemoteState'
+
+branding:
+  icon: 'image'
+  color: 'purple'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access (usually secrets.GITHUB_TOKEN)'
+    required: true
+
+  pen-files:
+    description: 'Glob pattern to match .pen files (default: **/*.pen)'
+    required: false
+    default: '**/*.pen'
+
+  renderer:
+    description: 'Renderer to use: "claude" (requires anthropic-api-key) or "metadata" (default)'
+    required: false
+    default: 'metadata'
+
+  anthropic-api-key:
+    description: 'Anthropic API key (required if renderer is "claude")'
+    required: false
+
+  output-dir:
+    description: 'Directory to store generated screenshots'
+    required: false
+    default: '.pencil-screenshots'
+
+  comment-mode:
+    description: 'How to post comments: "create" (always new), "update" (update existing), "none" (skip commenting)'
+    required: false
+    default: 'update'
+
+  upload-artifacts:
+    description: 'Whether to upload screenshots as workflow artifacts'
+    required: false
+    default: 'true'
+
+  include-deleted:
+    description: 'Whether to show deleted frames in the comment'
+    required: false
+    default: 'true'
+
+  max-frames-per-file:
+    description: 'Maximum number of frames to render per .pen file (0 for unlimited)'
+    required: false
+    default: '20'
+
+  image-format:
+    description: 'Output image format: "png" or "jpeg"'
+    required: false
+    default: 'png'
+
+outputs:
+  screenshots-path:
+    description: 'Path to the directory containing generated screenshots'
+
+  changed-files:
+    description: 'JSON array of changed .pen files'
+
+  frames-rendered:
+    description: 'Total number of frames rendered'
+
+  comment-id:
+    description: 'ID of the created/updated PR comment'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
