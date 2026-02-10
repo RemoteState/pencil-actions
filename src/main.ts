@@ -10,7 +10,7 @@ import * as path from 'path';
 
 import { getInputs, validateInputs } from './config';
 import { ActionInputs, PenFile, PenFrame, RenderResult, PenFileCommentData, FrameCommentData, CommentData } from './types';
-import { parsePenFile } from './pen-parser';
+import { loadPenDocument, getTopLevelFrames } from './pen-parser';
 import { getChangedPenFiles, getPRContext, isPullRequestEvent } from './github/files';
 import { postComment } from './github/comments';
 import { uploadScreenshots, ensureScreenshotsDir } from './github/artifacts';
@@ -83,8 +83,9 @@ async function run(): Promise<void> {
       }
 
       try {
-        // Parse the .pen file to get frames
-        const frames = await parsePenFile(file.path);
+        // Parse the .pen file to get top-level frames (screens/artboards)
+        const document = await loadPenDocument(file.path);
+        const frames = getTopLevelFrames(document);
 
         // Limit frames if configured
         const framesToProcess =
@@ -92,7 +93,7 @@ async function run(): Promise<void> {
             ? frames.slice(0, inputs.maxFramesPerFile)
             : frames;
 
-        core.info(`Found ${frames.length} frames, processing ${framesToProcess.length}`);
+        core.info(`Found ${frames.length} top-level frames, processing ${framesToProcess.length}`);
 
         // Render each frame
         const frameResults: FrameCommentData[] = [];
