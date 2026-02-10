@@ -1,5 +1,14 @@
 # Pencil Design Review GitHub Action
 
+## ⚠️ IMPORTANT: Live Test PR
+
+**DO NOT MERGE PR #1**: https://github.com/RemoteState/pencil-actions/pull/1
+
+This PR is our **permanent test bed** for testing the action. It should always remain open.
+- Use it to test changes to the action
+- Push to `test/design-update` branch to trigger new runs
+- Check the PR comments to verify the action works correctly
+
 ## Project Overview
 
 A GitHub Action that enables visual design review workflows for `.pen` files (Pencil design files) in pull requests. Think "code review, but for designs."
@@ -160,11 +169,37 @@ jobs:
 
 3. **Error Handling**: While basic error handling exists, edge cases with malformed .pen files need more testing.
 
+## Testing Workflow
+
+**Live Test PR**: https://github.com/RemoteState/pencil-actions/pull/1 (DO NOT MERGE)
+
+To test changes:
+```bash
+# 1. Make changes on main
+git checkout main
+# ... edit files ...
+npm run build && npm run package
+git add . && git commit -m "Your changes"
+git push origin main
+
+# 2. Update v1 tag
+git tag -f v1 && git push origin v1 --force
+
+# 3. Trigger test run by updating test branch
+git checkout test/design-update
+git rebase main
+git push --force
+
+# 4. Check results
+gh pr checks 1
+gh pr view 1 --comments
+```
+
 ## Testing Checklist
 
 To fully test this action:
-1. Create a test repository with sample .pen files
-2. Open a PR with .pen file changes
+1. ~~Create a test repository with sample .pen files~~ (use PR #1)
+2. ~~Open a PR with .pen file changes~~ (PR #1 is always open)
 3. Verify metadata mode works (no API key)
 4. Test visual mode with ANTHROPIC_API_KEY secret
 5. Verify PR comments are posted/updated correctly
