@@ -1,0 +1,88 @@
+name: 'Pen Design Review'
+description: 'Automatically preview .pen design files in pull requests'
+author: 'RemoteState'
+
+branding:
+  icon: 'pen-tool'
+  color: 'blue'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access (usually secrets.GITHUB_TOKEN)'
+    required: true
+
+  pen-files:
+    description: 'Glob pattern to match .pen files'
+    required: false
+    default: '**/*.pen'
+
+  renderer:
+    description: 'Renderer mode: "service" (generates screenshots) or "metadata" (frame info only)'
+    required: false
+    default: 'service'
+
+  service-url:
+    description: 'Screenshot rendering API URL'
+    required: false
+    default: 'https://pencil.remotestate.com'
+
+  service-api-key:
+    description: 'API key for paid tier (unlimited screenshots). If omitted, uses free tier via GitHub OIDC (100 screenshots/month). Free tier requires "permissions: id-token: write".'
+    required: false
+
+  output-dir:
+    description: 'Directory to store generated screenshots'
+    required: false
+    default: '.pencil-screenshots'
+
+  comment-mode:
+    description: 'How to post comments: "create" (always new), "update" (update existing), "none" (skip commenting)'
+    required: false
+    default: 'update'
+
+  upload-artifacts:
+    description: 'Whether to upload screenshots as workflow artifacts'
+    required: false
+    default: 'true'
+
+  include-deleted:
+    description: 'Whether to show deleted files in the comment'
+    required: false
+    default: 'true'
+
+  max-frames-per-file:
+    description: 'Maximum number of frames to render per .pen file (0 for unlimited)'
+    required: false
+    default: '20'
+
+  image-format:
+    description: 'Output image format: "webp" (smallest), "png", or "jpeg"'
+    required: false
+    default: 'webp'
+
+  image-scale:
+    description: 'Export scale: 1, 2, or 3'
+    required: false
+    default: '2'
+
+  image-quality:
+    description: 'Image quality for webp/jpeg (1-100)'
+    required: false
+    default: '90'
+
+outputs:
+  screenshots-path:
+    description: 'Path to the directory containing generated screenshots'
+
+  changed-files:
+    description: 'JSON array of changed .pen files'
+
+  frames-rendered:
+    description: 'Total number of frames rendered'
+
+  comment-id:
+    description: 'ID of the created/updated PR comment'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
