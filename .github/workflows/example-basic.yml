@@ -22,3 +22,4 @@ jobs:
         uses: remotestate/pencil-actions@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          renderer: metadata  # No screenshots, just frame info
