@@ -17,12 +17,20 @@ inputs:
     default: '**/*.pen'
 
   renderer:
-    description: 'Renderer to use: "claude" (requires anthropic-api-key) or "metadata" (default)'
+    description: 'Renderer to use: "service" (recommended), "claude" (requires anthropic-api-key), or "metadata" (default)'
     required: false
     default: 'metadata'
 
   anthropic-api-key:
     description: 'Anthropic API key (required if renderer is "claude")'
+    required: false
+
+  service-url:
+    description: 'URL of the pencil-screenshot-service (required if renderer is "service")'
+    required: false
+
+  service-api-key:
+    description: 'API key for the pencil-screenshot-service'
     required: false
 
   output-dir:
@@ -51,9 +59,19 @@ inputs:
     default: '20'
 
   image-format:
-    description: 'Output image format: "png" or "jpeg"'
+    description: 'Output image format: "webp" (smallest), "png", or "jpeg"'
     required: false
-    default: 'png'
+    default: 'webp'
+
+  image-scale:
+    description: 'Export scale: 1, 2, or 3'
+    required: false
+    default: '2'
+
+  image-quality:
+    description: 'Image quality for webp/jpeg (1-100)'
+    required: false
+    default: '90'
 
 outputs:
   screenshots-path:

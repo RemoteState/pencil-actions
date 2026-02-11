@@ -7,17 +7,22 @@ export interface ActionInputs {
   penFilesPattern: string;
   renderer: RendererType;
   claudeApiKey?: string;
+  serviceUrl?: string;      // URL for pencil-screenshot-service
+  serviceApiKey?: string;   // API key for screenshot service
   outputDir: string;
   commentMode: CommentMode;
   uploadArtifacts: boolean;
   includeDeleted: boolean;
   maxFramesPerFile: number;
   imageFormat: ImageFormat;
+  imageScale: ImageScale;   // Export scale: 1, 2, or 3
+  imageQuality: number;     // Quality for webp/jpeg: 1-100
 }
 
-export type RendererType = 'claude' | 'metadata';
+export type RendererType = 'claude' | 'metadata' | 'service';
 export type CommentMode = 'create' | 'update' | 'none';
-export type ImageFormat = 'png' | 'jpeg';
+export type ImageFormat = 'png' | 'jpeg' | 'webp';
+export type ImageScale = 1 | 2 | 3;
 
 export interface PenFile {
   path: string;
