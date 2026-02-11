@@ -20,6 +20,14 @@
   ],
   "author": "Ritik Rishu",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RemoteState/pencil-actions"
+  },
+  "homepage": "https://github.com/RemoteState/pencil-actions",
+  "bugs": {
+    "url": "https://github.com/RemoteState/pencil-actions/issues"
+  },
   "dependencies": {
     "@actions/core": "^1.10.1",
     "@actions/github": "^6.0.0",

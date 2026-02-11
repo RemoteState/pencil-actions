@@ -3,7 +3,7 @@
  *
  * This renderer doesn't generate actual screenshots.
  * It extracts frame information from .pen files for display in PR comments.
- * Used when no Anthropic API key is provided.
+ * Used when no screenshot service is configured.
  */
 
 import * as core from '@actions/core';

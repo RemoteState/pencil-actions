@@ -28,3 +28,4 @@ jobs:
           service-url: https://pencil.remotestate.com
           max-frames-per-file: 10
           image-format: webp
+          image-scale: 3

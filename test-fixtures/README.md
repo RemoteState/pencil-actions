@@ -15,16 +15,6 @@ test-fixtures/
 
 Drop any `.pen` files into the `designs/` folder to use them for testing.
 
-## Running Tests
-
-```bash
-# Quick parser test
-npx ts-node test-parser.ts
-
-# Full action simulation
-npx ts-node test-full.ts
-```
-
 ## Sample Files
 
 | File | Frames | Description |

@@ -47,7 +47,7 @@ That's it. Every PR that touches a `.pen` file will get a comment like this:
 > | **Job Positions** | Open positions management with application counts |
 > | **Settings** | System configuration, integrations, and preferences |
 >
-> ![Interview Express Dashboard](https://pencil.remotestate.com/images/interview-express-dashboard.webp)
+> ![Interview Express Dashboard](https://camo.githubusercontent.com/85cddabfaaec97ad05898511953cc95ec2e59eaf7a7b3c8649e811ffa909487a/68747470733a2f2f70656e63696c2e72656d6f746573746174652e636f6d2f696d616765732f65613366333563372d653265352d343436312d616662612d3564616466363361303966362e77656270)
 
 ## How It Works
 
