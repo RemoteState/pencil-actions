@@ -77,6 +77,7 @@ const POLL_INITIAL_INTERVAL_MS = 2000;
 const POLL_MULTIPLIER = 1.5;
 const POLL_MAX_INTERVAL_MS = 15000;
 const POLL_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
+const TOKEN_REFRESH_MS = 4 * 60 * 1000; // refresh OIDC token every 4 minutes
 
 export class ServiceRenderer extends BaseRenderer {
   name = 'service';
@@ -84,6 +85,7 @@ export class ServiceRenderer extends BaseRenderer {
   private serviceUrl: string;
   private apiKey?: string;
   private authToken?: string;
+  private tokenAcquiredAt = 0;
   private imageFormat: ImageFormat;
   private imageScale: ImageScale;
   private imageQuality: number;
@@ -109,19 +111,7 @@ export class ServiceRenderer extends BaseRenderer {
       core.info('Service renderer: using API key authentication');
     } else {
       // Free tier — request GitHub OIDC token
-      core.info('Service renderer: requesting GitHub OIDC token');
-      try {
-        const oidcToken = await core.getIDToken('pencil.remotestate.com');
-        this.authToken = oidcToken;
-        core.setSecret(oidcToken);
-        core.info('Service renderer: OIDC token acquired');
-      } catch (err) {
-        throw new Error(
-          `Failed to get OIDC token. Ensure your workflow has "permissions: id-token: write". Error: ${
-            err instanceof Error ? err.message : err
-          }`
-        );
-      }
+      await this.refreshOidcToken();
     }
 
     // Verify connectivity
@@ -203,6 +193,37 @@ export class ServiceRenderer extends BaseRenderer {
   }
 
   /**
+   * Request a fresh OIDC token from GitHub Actions.
+   */
+  private async refreshOidcToken(): Promise<void> {
+    core.info('Service renderer: requesting GitHub OIDC token');
+    try {
+      const oidcToken = await core.getIDToken('pencil.remotestate.com');
+      this.authToken = oidcToken;
+      this.tokenAcquiredAt = Date.now();
+      core.setSecret(oidcToken);
+      core.info('Service renderer: OIDC token acquired');
+    } catch (err) {
+      throw new Error(
+        `Failed to get OIDC token. Ensure your workflow has "permissions: id-token: write". Error: ${
+          err instanceof Error ? err.message : err
+        }`
+      );
+    }
+  }
+
+  /**
+   * Refresh the OIDC token if it's older than 4 minutes.
+   * API keys never expire, so this is a no-op for paid tier.
+   */
+  private async ensureFreshToken(): Promise<void> {
+    if (this.apiKey) return;
+    if (Date.now() - this.tokenAcquiredAt >= TOKEN_REFRESH_MS) {
+      await this.refreshOidcToken();
+    }
+  }
+
+  /**
    * Submit the entire .pen file as an async job, then poll for completion.
    */
   private async fetchAllFrames(penFilePath: string): Promise<void> {
@@ -210,6 +231,9 @@ export class ServiceRenderer extends BaseRenderer {
 
     const penFileContent = fs.readFileSync(penFilePath, 'utf-8');
     const penFileBase64 = Buffer.from(penFileContent).toString('base64');
+
+    // Ensure token is fresh before submitting
+    await this.ensureFreshToken();
 
     // Submit job
     const submitUrl = `${this.serviceUrl}/api/v1/screenshot`;
@@ -291,6 +315,9 @@ export class ServiceRenderer extends BaseRenderer {
       }
 
       await sleep(interval);
+
+      // Refresh OIDC token if close to expiry
+      await this.ensureFreshToken();
 
       const resp = await fetch(pollUrl, {
         headers: {
