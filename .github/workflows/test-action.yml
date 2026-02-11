@@ -25,4 +25,4 @@ jobs:
           service-url: https://pencil.remotestate.com
           service-api-key: ${{ secrets.SCREENSHOT_API_KEY }}
           image-format: webp
-          image-scale: 2
+          image-scale: 3

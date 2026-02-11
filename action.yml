@@ -3,7 +3,7 @@ description: 'Automatically preview .pen design files in pull requests'
 author: 'RemoteState'
 
 branding:
-  icon: 'pen-tool'
+  icon: 'book-open'
   color: 'blue'
 
 inputs:
