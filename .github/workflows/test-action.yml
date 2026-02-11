@@ -11,12 +11,18 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      id-token: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Run Design Review (Local Action)
-        uses: ./  # Uses the action from this repo
+        uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          renderer: service
+          service-url: https://pencil.remotestate.com
+          service-api-key: ${{ secrets.SCREENSHOT_API_KEY }}
+          image-format: webp
+          image-scale: 2

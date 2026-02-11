@@ -17,13 +17,9 @@ inputs:
     default: '**/*.pen'
 
   renderer:
-    description: 'Renderer to use: "service" (recommended), "claude" (requires anthropic-api-key), or "metadata" (default)'
+    description: 'Renderer to use: "service" (recommended, generates screenshots) or "metadata" (default, frame info only)'
     required: false
     default: 'metadata'
-
-  anthropic-api-key:
-    description: 'Anthropic API key (required if renderer is "claude")'
-    required: false
 
   service-url:
     description: 'URL of the pencil-screenshot-service (required if renderer is "service")'

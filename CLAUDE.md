@@ -16,9 +16,8 @@ A GitHub Action that enables visual design review workflows for `.pen` files (Pe
 
 | Mode | Use Case | Requirements |
 |------|----------|--------------|
-| **service** (recommended) | Production with pencil-screenshot-service | `service-url` (+ optional `service-api-key` or OIDC) |
-| **claude** | Claude CLI + Pencil MCP | `anthropic-api-key` |
-| **metadata** (default) | No visual rendering | None |
+| **service** (recommended) | Production screenshots via pencil-screenshot-service | `service-url` (+ optional `service-api-key` or OIDC) |
+| **metadata** (default) | No visual rendering, frame info only | None |
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -27,13 +26,12 @@ A GitHub Action that enables visual design review workflows for `.pen` files (Pe
 │                                                              │
 │  renderer: service                                           │
 │       │                                                      │
-│       └──► pencil-screenshot-service API                     │
+│       ├──► API key auth (paid, no limit)                     │
+│       └──► GitHub OIDC auth (free, 100/month/repo)           │
 │                   │                                          │
-│                   └──► Pencil WebSocket (export-node-advanced)│
-│                                                              │
-│  renderer: claude                                            │
-│       │                                                      │
-│       └──► Claude CLI ──► Pencil MCP                         │
+│                   └──► pencil-screenshot-service API          │
+│                           │                                  │
+│                           └──► Pencil WebSocket              │
 │                                                              │
 │  renderer: metadata                                          │
 │       │                                                      │
@@ -46,7 +44,7 @@ A GitHub Action that enables visual design review workflows for `.pen` files (Pe
 
 - **Language**: TypeScript (Node.js 20)
 - **Build**: `@vercel/ncc` for single-file bundling
-- **Packages**: `@actions/core`, `@actions/github`, `@actions/exec`, `@actions/artifact`
+- **Packages**: `@actions/core`, `@actions/github`, `@actions/artifact`
 
 ## Project Structure
 
@@ -67,7 +65,6 @@ pencil-actions/
 │   ├── renderers/
 │   │   ├── base.ts           # Renderer interface
 │   │   ├── metadata.ts       # Metadata-only renderer
-│   │   ├── claude.ts         # Claude Code CLI renderer
 │   │   └── service.ts        # Screenshot service renderer (OIDC + API key)
 │   └── comment-builder.ts    # Markdown comment generation
 ├── dist/                     # Bundled action (committed to repo)
@@ -79,10 +76,9 @@ pencil-actions/
 | Input | Description | Default |
 |-------|-------------|---------|
 | `github-token` | GitHub token for API access | Required |
-| `renderer` | Renderer mode: `service`, `claude`, `metadata` | `metadata` |
+| `renderer` | Renderer mode: `service` or `metadata` | `metadata` |
 | `service-url` | pencil-screenshot-service URL | - |
-| `service-api-key` | Screenshot service API key | - |
-| `anthropic-api-key` | Anthropic API key (for claude mode) | - |
+| `service-api-key` | Screenshot service API key (optional, uses OIDC if omitted) | - |
 | `image-format` | Output format: `webp`, `png`, `jpeg` | `webp` |
 | `image-scale` | Export scale: `1`, `2`, `3` | `2` |
 | `image-quality` | Quality 1-100 (webp/jpeg) | `90` |
@@ -118,15 +114,6 @@ steps:
       # No service-api-key needed — authenticates via GitHub OIDC
 ```
 
-### Claude Mode
-```yaml
-- uses: remotestate/pencil-actions@v1
-  with:
-    github-token: ${{ secrets.GITHUB_TOKEN }}
-    renderer: claude
-    anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-```
-
 ### Metadata Mode (No Images)
 ```yaml
 - uses: remotestate/pencil-actions@v1
@@ -160,7 +147,6 @@ npm test            # Run tests
 - [x] .pen file parser
 - [x] GitHub file detection
 - [x] Metadata renderer
-- [x] Claude CLI renderer
 - [x] PR comment builder
 - [x] Artifact upload
 - [x] WebP default format

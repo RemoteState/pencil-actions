@@ -16,7 +16,6 @@ import { postComment } from './github/comments';
 import { uploadScreenshots, ensureScreenshotsDir } from './github/artifacts';
 import { buildComment, calculateSummary, buildNoChangesComment } from './comment-builder';
 import { MetadataRenderer } from './renderers/metadata';
-import { ClaudeRenderer, createClaudeRenderer } from './renderers/claude';
 import { createServiceRenderer } from './renderers/service';
 import { BaseRenderer } from './renderers/base';
 
@@ -203,9 +202,6 @@ async function initializeRenderer(inputs: ActionInputs): Promise<BaseRenderer> {
       inputs.imageScale,
       inputs.imageQuality
     );
-  } else if (inputs.renderer === 'claude' && inputs.claudeApiKey) {
-    core.info('Using Claude renderer (visual mode)');
-    renderer = createClaudeRenderer(inputs.claudeApiKey, inputs.imageFormat);
   } else {
     core.info('Using metadata renderer (no screenshots)');
     renderer = new MetadataRenderer();

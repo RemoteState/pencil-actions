@@ -13,17 +13,10 @@ import {
 
 export function getInputs(): ActionInputs {
   const renderer = (core.getInput('renderer') || 'metadata') as RendererType;
-  const claudeApiKey = core.getInput('anthropic-api-key');
   const serviceUrl = core.getInput('service-url');
   const serviceApiKey = core.getInput('service-api-key');
 
   // Validate renderer configuration
-  if (renderer === 'claude' && !claudeApiKey) {
-    throw new Error(
-      'anthropic-api-key is required when using the "claude" renderer'
-    );
-  }
-
   if (renderer === 'service' && !serviceUrl) {
     throw new Error(
       'service-url is required when using the "service" renderer'
@@ -34,7 +27,6 @@ export function getInputs(): ActionInputs {
     githubToken: core.getInput('github-token', { required: true }),
     penFilesPattern: core.getInput('pen-files') || '**/*.pen',
     renderer: renderer,
-    claudeApiKey: claudeApiKey || undefined,
     serviceUrl: serviceUrl || undefined,
     serviceApiKey: serviceApiKey || undefined,
     outputDir: core.getInput('output-dir') || '.pencil-screenshots',
@@ -48,9 +40,6 @@ export function getInputs(): ActionInputs {
   };
 
   // Mask sensitive inputs
-  if (inputs.claudeApiKey) {
-    core.setSecret(inputs.claudeApiKey);
-  }
   if (inputs.serviceApiKey) {
     core.setSecret(inputs.serviceApiKey);
   }
@@ -63,8 +52,8 @@ export function validateInputs(inputs: ActionInputs): void {
     throw new Error('github-token is required');
   }
 
-  if (!['claude', 'metadata', 'service'].includes(inputs.renderer)) {
-    throw new Error(`Invalid renderer: ${inputs.renderer}. Must be "claude", "metadata", or "service"`);
+  if (!['metadata', 'service'].includes(inputs.renderer)) {
+    throw new Error(`Invalid renderer: ${inputs.renderer}. Must be "service" or "metadata"`);
   }
 
   if (!['create', 'update', 'none'].includes(inputs.commentMode)) {
