@@ -30,7 +30,7 @@ inputs:
     required: false
 
   service-api-key:
-    description: 'API key for the pencil-screenshot-service'
+    description: 'API key for the pencil-screenshot-service (optional — if omitted, authenticates via GitHub OIDC for free tier, 100 screenshots/month). Requires "permissions: id-token: write" in workflow.'
     required: false
 
   output-dir:

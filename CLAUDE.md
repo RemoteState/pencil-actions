@@ -16,7 +16,7 @@ A GitHub Action that enables visual design review workflows for `.pen` files (Pe
 
 | Mode | Use Case | Requirements |
 |------|----------|--------------|
-| **service** (recommended) | Production with pencil-screenshot-service | `service-url`, `service-api-key` |
+| **service** (recommended) | Production with pencil-screenshot-service | `service-url` (+ optional `service-api-key` or OIDC) |
 | **claude** | Claude CLI + Pencil MCP | `anthropic-api-key` |
 | **metadata** (default) | No visual rendering | None |
 
@@ -67,7 +67,8 @@ pencil-actions/
 │   ├── renderers/
 │   │   ├── base.ts           # Renderer interface
 │   │   ├── metadata.ts       # Metadata-only renderer
-│   │   └── claude.ts         # Claude Code CLI renderer
+│   │   ├── claude.ts         # Claude Code CLI renderer
+│   │   └── service.ts        # Screenshot service renderer (OIDC + API key)
 │   └── comment-builder.ts    # Markdown comment generation
 ├── dist/                     # Bundled action (committed to repo)
 └── __tests__/               # Unit tests
@@ -89,16 +90,32 @@ pencil-actions/
 
 ## Usage Examples
 
-### Service Mode (Recommended)
+### Service Mode with API Key (Paid)
 ```yaml
 - uses: remotestate/pencil-actions@v1
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     renderer: service
-    service-url: https://your-screenshot-service.example.com
+    service-url: https://pencil.remotestate.com
     service-api-key: ${{ secrets.SCREENSHOT_API_KEY }}
     image-format: webp   # smallest file size
     image-scale: 2
+```
+
+### Service Mode with OIDC (Free Tier - 100 screenshots/month)
+```yaml
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write          # Required for OIDC authentication
+
+steps:
+  - uses: remotestate/pencil-actions@v1
+    with:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      renderer: service
+      service-url: https://pencil.remotestate.com
+      # No service-api-key needed — authenticates via GitHub OIDC
 ```
 
 ### Claude Mode
@@ -147,7 +164,7 @@ npm test            # Run tests
 - [x] PR comment builder
 - [x] Artifact upload
 - [x] WebP default format
-- [ ] Service renderer (TODO)
+- [x] Service renderer (batch-and-cache, OIDC + API key auth)
 - [ ] Unit tests
 
 ## Testing

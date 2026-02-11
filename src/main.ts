@@ -17,6 +17,7 @@ import { uploadScreenshots, ensureScreenshotsDir } from './github/artifacts';
 import { buildComment, calculateSummary, buildNoChangesComment } from './comment-builder';
 import { MetadataRenderer } from './renderers/metadata';
 import { ClaudeRenderer, createClaudeRenderer } from './renderers/claude';
+import { createServiceRenderer } from './renderers/service';
 import { BaseRenderer } from './renderers/base';
 
 async function run(): Promise<void> {
@@ -193,7 +194,16 @@ async function run(): Promise<void> {
 async function initializeRenderer(inputs: ActionInputs): Promise<BaseRenderer> {
   let renderer: BaseRenderer;
 
-  if (inputs.renderer === 'claude' && inputs.claudeApiKey) {
+  if (inputs.renderer === 'service' && inputs.serviceUrl) {
+    core.info('Using service renderer (pencil-screenshot-service)');
+    renderer = createServiceRenderer(
+      inputs.serviceUrl,
+      inputs.serviceApiKey,
+      inputs.imageFormat,
+      inputs.imageScale,
+      inputs.imageQuality
+    );
+  } else if (inputs.renderer === 'claude' && inputs.claudeApiKey) {
     core.info('Using Claude renderer (visual mode)');
     renderer = createClaudeRenderer(inputs.claudeApiKey, inputs.imageFormat);
   } else {
