@@ -34,6 +34,7 @@ interface ServiceScreenshot {
   imageBase64: string;
   format: string;
   scale: number;
+  imageUrl?: string;
 }
 
 interface ServiceResponse {
@@ -48,6 +49,7 @@ interface CachedFrame {
   format: string;
   width: number;
   height: number;
+  imageUrl?: string;
 }
 
 export class ServiceRenderer extends BaseRenderer {
@@ -156,7 +158,9 @@ export class ServiceRenderer extends BaseRenderer {
       const buffer = Buffer.from(cached.imageBase64, 'base64');
       fs.writeFileSync(outputPath, buffer);
 
-      return createSuccessResult(frame, penFilePath, outputPath);
+      const result = createSuccessResult(frame, penFilePath, outputPath);
+      result.imageUrl = cached.imageUrl;
+      return result;
     } catch (err) {
       return createErrorResult(
         frame,
@@ -222,6 +226,7 @@ export class ServiceRenderer extends BaseRenderer {
         format: screenshot.format,
         width: screenshot.width,
         height: screenshot.height,
+        imageUrl: screenshot.imageUrl,
       });
     }
     this.cache.set(penFilePath, frameMap);

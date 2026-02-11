@@ -106,6 +106,7 @@ async function run(): Promise<void> {
           frameResults.push({
             id: frame.id,
             name: frame.name,
+            screenshotUrl: result.imageUrl,
             screenshotPath: result.success ? result.screenshotPath : undefined,
             error: result.error,
           });

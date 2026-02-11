@@ -51,6 +51,7 @@ export interface ScreenshotResult {
   error?: string;
   width?: number;
   height?: number;
+  imageUrl?: string;
 }
 
 export interface RenderResult {
