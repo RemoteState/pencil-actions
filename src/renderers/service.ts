@@ -6,6 +6,9 @@
  * Solution: batch-and-cache. On first call for a .pen file, send the whole file
  * to the API and cache all frame results. Subsequent calls return from cache.
  *
+ * Uses async job queue: POST returns 202 with jobId, then we poll GET /jobs/:jobId
+ * until the job completes. This avoids Cloudflare's 100s gateway timeout.
+ *
  * Supports two auth modes:
  * - API key (paid): uses service-api-key input
  * - OIDC (free): requests GitHub Actions OIDC token for pencil.remotestate.com
@@ -43,6 +46,24 @@ interface ServiceResponse {
   errors?: Array<{ frameId: string; frameName: string; error: string }>;
 }
 
+interface JobSubmitResponse {
+  jobId: string;
+  status: string;
+  queuePosition: number;
+  pollUrl: string;
+}
+
+interface JobStatusResponse {
+  jobId: string;
+  status: 'queued' | 'processing' | 'completed' | 'failed';
+  queuePosition: number;
+  createdAt: number;
+  startedAt?: number;
+  completedAt?: number;
+  result?: ServiceResponse;
+  error?: string;
+}
+
 /** Cached result for a single frame from the API */
 interface CachedFrame {
   imageBase64: string;
@@ -51,6 +72,11 @@ interface CachedFrame {
   height: number;
   imageUrl?: string;
 }
+
+const POLL_INITIAL_INTERVAL_MS = 2000;
+const POLL_MULTIPLIER = 1.5;
+const POLL_MAX_INTERVAL_MS = 15000;
+const POLL_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
 
 export class ServiceRenderer extends BaseRenderer {
   name = 'service';
@@ -177,7 +203,7 @@ export class ServiceRenderer extends BaseRenderer {
   }
 
   /**
-   * Send the entire .pen file to the API and cache all frame results.
+   * Submit the entire .pen file as an async job, then poll for completion.
    */
   private async fetchAllFrames(penFilePath: string): Promise<void> {
     this.sentFiles.add(penFilePath);
@@ -185,9 +211,9 @@ export class ServiceRenderer extends BaseRenderer {
     const penFileContent = fs.readFileSync(penFilePath, 'utf-8');
     const penFileBase64 = Buffer.from(penFileContent).toString('base64');
 
-    const url = `${this.serviceUrl}/api/v1/screenshot`;
-
-    const resp = await fetch(url, {
+    // Submit job
+    const submitUrl = `${this.serviceUrl}/api/v1/screenshot`;
+    const submitResp = await fetch(submitUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -201,22 +227,26 @@ export class ServiceRenderer extends BaseRenderer {
       }),
     });
 
-    if (!resp.ok) {
-      const body = await resp.text();
-      throw new Error(`Screenshot service returned ${resp.status}: ${body}`);
+    if (!submitResp.ok) {
+      const body = await submitResp.text();
+      throw new Error(`Screenshot service returned ${submitResp.status}: ${body}`);
     }
 
-    const data = (await resp.json()) as ServiceResponse;
+    const submitData = (await submitResp.json()) as JobSubmitResponse;
+    core.info(`Job ${submitData.jobId} submitted (queue position: ${submitData.queuePosition})`);
 
     // Log usage headers if present (free tier)
-    const usageCurrent = resp.headers.get('X-Usage-Current');
-    const usageLimit = resp.headers.get('X-Usage-Limit');
-    const usageRemaining = resp.headers.get('X-Usage-Remaining');
+    const usageCurrent = submitResp.headers.get('X-Usage-Current');
+    const usageLimit = submitResp.headers.get('X-Usage-Limit');
+    const usageRemaining = submitResp.headers.get('X-Usage-Remaining');
     if (usageCurrent) {
       core.info(
         `Usage: ${usageCurrent}/${usageLimit} (${usageRemaining} remaining)`
       );
     }
+
+    // Poll for completion
+    const data = await this.pollForCompletion(submitData.jobId);
 
     // Cache all returned screenshots
     const frameMap = new Map<string, CachedFrame>();
@@ -244,6 +274,67 @@ export class ServiceRenderer extends BaseRenderer {
       `Fetched ${data.screenshots.length} screenshots for ${path.basename(penFilePath)}`
     );
   }
+
+  /**
+   * Poll GET /jobs/:jobId with exponential backoff until completed or failed.
+   */
+  private async pollForCompletion(jobId: string): Promise<ServiceResponse> {
+    const pollUrl = `${this.serviceUrl}/api/v1/jobs/${jobId}`;
+    const startTime = Date.now();
+    let interval = POLL_INITIAL_INTERVAL_MS;
+    let lastQueuePosition = -1;
+
+    while (true) {
+      const elapsed = Date.now() - startTime;
+      if (elapsed > POLL_TIMEOUT_MS) {
+        throw new Error(`Job ${jobId} timed out after ${Math.round(elapsed / 1000)}s`);
+      }
+
+      await sleep(interval);
+
+      const resp = await fetch(pollUrl, {
+        headers: {
+          Authorization: `Bearer ${this.authToken}`,
+        },
+      });
+
+      if (!resp.ok) {
+        throw new Error(`Job status request failed with ${resp.status}: ${await resp.text()}`);
+      }
+
+      const status = (await resp.json()) as JobStatusResponse;
+
+      // Log queue position changes
+      if (status.queuePosition !== lastQueuePosition) {
+        if (status.status === 'queued') {
+          core.info(`Job ${jobId}: queued (position ${status.queuePosition})`);
+        } else if (status.status === 'processing') {
+          core.info(`Job ${jobId}: processing...`);
+        }
+        lastQueuePosition = status.queuePosition;
+      }
+
+      if (status.status === 'completed') {
+        if (!status.result) {
+          throw new Error(`Job ${jobId} completed but returned no result`);
+        }
+        const duration = Math.round((Date.now() - startTime) / 1000);
+        core.info(`Job ${jobId}: completed in ${duration}s`);
+        return status.result;
+      }
+
+      if (status.status === 'failed') {
+        throw new Error(`Job ${jobId} failed: ${status.error || 'Unknown error'}`);
+      }
+
+      // Exponential backoff, capped
+      interval = Math.min(interval * POLL_MULTIPLIER, POLL_MAX_INTERVAL_MS);
+    }
+  }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export function createServiceRenderer(
