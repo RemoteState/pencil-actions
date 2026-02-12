@@ -115,32 +115,3 @@ export function getPRContext(): {
 export function isPullRequestEvent(): boolean {
   return !!github.context.payload.pull_request;
 }
-
-/**
- * Get file content from a specific ref
- */
-export async function getFileContent(
-  octokit: Octokit,
-  filePath: string,
-  ref: string
-): Promise<string | null> {
-  const context = github.context;
-
-  try {
-    const response = await octokit.rest.repos.getContent({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      path: filePath,
-      ref,
-    });
-
-    if ('content' in response.data && response.data.content) {
-      return Buffer.from(response.data.content, 'base64').toString('utf-8');
-    }
-
-    return null;
-  } catch (error) {
-    // File doesn't exist at this ref
-    return null;
-  }
-}

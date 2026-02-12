@@ -9,7 +9,6 @@
 import * as core from '@actions/core';
 import { BaseRenderer, createSuccessResult } from './base';
 import { PenFrame, ScreenshotResult } from '../types';
-import { parsePenFile, loadPenDocument, getDocumentInfo } from '../pen-parser';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -37,7 +36,7 @@ export class MetadataRenderer extends BaseRenderer {
     core.debug(`Processing frame metadata: ${frame.name} (${frame.id})`);
 
     // Create a placeholder file with frame info (for artifact upload)
-    const placeholderPath = outputPath.replace(/\.(png|jpe?g)$/i, '.json');
+    const placeholderPath = outputPath.replace(/\.(png|jpe?g|webp)$/i, '.json');
 
     try {
       const frameInfo = {
@@ -78,18 +77,4 @@ export class MetadataRenderer extends BaseRenderer {
   async cleanup(): Promise<void> {
     // Nothing to clean up for metadata renderer
   }
-}
-
-/**
- * Get all frames from a .pen file for metadata display
- */
-export async function getFramesForMetadata(penFilePath: string): Promise<{
-  frames: PenFrame[];
-  documentInfo: ReturnType<typeof getDocumentInfo>;
-}> {
-  const document = await loadPenDocument(penFilePath);
-  const frames = await parsePenFile(penFilePath);
-  const documentInfo = getDocumentInfo(document);
-
-  return { frames, documentInfo };
 }

@@ -63,122 +63,123 @@ async function run(): Promise<void> {
     // Initialize renderer
     const renderer = await initializeRenderer(inputs);
 
-    // Process each file
-    const fileResults: PenFileCommentData[] = [];
-    let totalFramesRendered = 0;
+    try {
+      // Process each file
+      const fileResults: PenFileCommentData[] = [];
+      let totalFramesRendered = 0;
 
-    ensureScreenshotsDir(inputs.outputDir);
+      ensureScreenshotsDir(inputs.outputDir);
 
-    for (const file of changedFiles) {
-      core.info(`Processing: ${file.path}`);
+      for (const file of changedFiles) {
+        core.info(`Processing: ${file.path}`);
 
-      if (file.status === 'deleted') {
-        // For deleted files, just note they were deleted
-        fileResults.push({
-          path: file.path,
-          status: file.status,
-          frames: [],
-        });
-        continue;
-      }
-
-      try {
-        // Parse the .pen file to get top-level frames (screens/artboards)
-        const document = await loadPenDocument(file.path);
-        const frames = getTopLevelFrames(document);
-
-        // Limit frames if configured
-        const framesToProcess =
-          inputs.maxFramesPerFile > 0
-            ? frames.slice(0, inputs.maxFramesPerFile)
-            : frames;
-
-        core.info(`Found ${frames.length} top-level frames, processing ${framesToProcess.length}`);
-
-        // Render each frame
-        const frameResults: FrameCommentData[] = [];
-
-        for (const frame of framesToProcess) {
-          const outputPath = getOutputPath(inputs.outputDir, file.path, frame, inputs.imageFormat);
-
-          const result = await renderer.renderFrame(file.path, frame, outputPath);
-
-          frameResults.push({
-            id: frame.id,
-            name: frame.name,
-            screenshotUrl: result.imageUrl,
-            screenshotPath: result.success ? result.screenshotPath : undefined,
-            error: result.error,
+        if (file.status === 'deleted') {
+          // For deleted files, just note they were deleted
+          fileResults.push({
+            path: file.path,
+            status: file.status,
+            frames: [],
           });
-
-          if (result.success) {
-            totalFramesRendered++;
-          }
+          continue;
         }
 
-        fileResults.push({
-          path: file.path,
-          status: file.status,
-          frames: frameResults,
-        });
-      } catch (error) {
-        core.warning(`Failed to process ${file.path}: ${error}`);
-        fileResults.push({
-          path: file.path,
-          status: file.status,
-          frames: [
-            {
-              id: 'error',
-              name: 'Processing Error',
-              error: error instanceof Error ? error.message : 'Unknown error',
-            },
-          ],
-        });
+        try {
+          // Parse the .pen file to get top-level frames (screens/artboards)
+          const document = await loadPenDocument(file.path);
+          const frames = getTopLevelFrames(document);
+
+          // Limit frames if configured
+          const framesToProcess =
+            inputs.maxFramesPerFile > 0
+              ? frames.slice(0, inputs.maxFramesPerFile)
+              : frames;
+
+          core.info(`Found ${frames.length} top-level frames, processing ${framesToProcess.length}`);
+
+          // Render each frame
+          const frameResults: FrameCommentData[] = [];
+
+          for (const frame of framesToProcess) {
+            const outputPath = getOutputPath(inputs.outputDir, file.path, frame, inputs.imageFormat);
+
+            const result = await renderer.renderFrame(file.path, frame, outputPath);
+
+            frameResults.push({
+              id: frame.id,
+              name: frame.name,
+              screenshotUrl: result.imageUrl,
+              screenshotPath: result.success ? result.screenshotPath : undefined,
+              error: result.error,
+            });
+
+            if (result.success) {
+              totalFramesRendered++;
+            }
+          }
+
+          fileResults.push({
+            path: file.path,
+            status: file.status,
+            frames: frameResults,
+          });
+        } catch (error) {
+          core.warning(`Failed to process ${file.path}: ${error}`);
+          fileResults.push({
+            path: file.path,
+            status: file.status,
+            frames: [
+              {
+                id: 'error',
+                name: 'Processing Error',
+                error: error instanceof Error ? error.message : 'Unknown error',
+              },
+            ],
+          });
+        }
       }
-    }
 
-    // Upload screenshots as artifacts
-    let artifactUrl: string | undefined;
-    if (inputs.uploadArtifacts) {
-      const uploadResult = await uploadScreenshots(inputs.outputDir);
-      artifactUrl = uploadResult.artifactUrl;
-    }
-
-    // Build and post comment
-    if (inputs.commentMode !== 'none') {
-      const summary = calculateSummary(fileResults);
-
-      const commentData: CommentData = {
-        files: fileResults,
-        summary,
-        prNumber: prContext.prNumber,
-        commitSha: prContext.headSha,
-      };
-
-      const commentBody = buildComment(commentData);
-      const commentId = await postComment(
-        octokit,
-        prContext.prNumber,
-        commentBody,
-        inputs.commentMode
-      );
-
-      if (commentId) {
-        core.setOutput('comment-id', commentId.toString());
+      // Upload screenshots as artifacts
+      let artifactUrl: string | undefined;
+      if (inputs.uploadArtifacts) {
+        const uploadResult = await uploadScreenshots(inputs.outputDir);
+        artifactUrl = uploadResult.artifactUrl;
       }
+
+      // Build and post comment
+      if (inputs.commentMode !== 'none') {
+        const summary = calculateSummary(fileResults);
+
+        const commentData: CommentData = {
+          files: fileResults,
+          summary,
+          prNumber: prContext.prNumber,
+          commitSha: prContext.headSha,
+        };
+
+        const commentBody = buildComment(commentData);
+        const commentId = await postComment(
+          octokit,
+          prContext.prNumber,
+          commentBody,
+          inputs.commentMode
+        );
+
+        if (commentId) {
+          core.setOutput('comment-id', commentId.toString());
+        }
+      }
+
+      // Set outputs
+      setOutputs({
+        screenshotsPath: inputs.outputDir,
+        changedFiles: changedFiles.map(f => f.path),
+        framesRendered: totalFramesRendered,
+      });
+
+      core.info(`✅ Design review complete! Processed ${totalFramesRendered} frames from ${changedFiles.length} files`);
+    } finally {
+      await renderer.cleanup();
     }
-
-    // Cleanup renderer
-    await renderer.cleanup();
-
-    // Set outputs
-    setOutputs({
-      screenshotsPath: inputs.outputDir,
-      changedFiles: changedFiles.map(f => f.path),
-      framesRendered: totalFramesRendered,
-    });
-
-    core.info(`✅ Design review complete! Processed ${totalFramesRendered} frames from ${changedFiles.length} files`);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);
