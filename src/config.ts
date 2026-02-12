@@ -12,7 +12,7 @@ import {
 } from './types';
 
 export function getInputs(): ActionInputs {
-  const renderer = (core.getInput('renderer') || 'metadata') as RendererType;
+  const renderer = (core.getInput('renderer') || 'service') as RendererType;
   const serviceUrl = core.getInput('service-url');
   const serviceApiKey = core.getInput('service-api-key');
 
