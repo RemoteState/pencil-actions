@@ -34,10 +34,9 @@ interface ServiceScreenshot {
   frameName: string;
   width: number;
   height: number;
-  imageBase64: string;
   format: string;
   scale: number;
-  imageUrl?: string;
+  imageUrl: string;
 }
 
 interface ServiceResponse {
@@ -66,11 +65,10 @@ interface JobStatusResponse {
 
 /** Cached result for a single frame from the API */
 interface CachedFrame {
-  imageBase64: string;
   format: string;
   width: number;
   height: number;
-  imageUrl?: string;
+  imageUrl: string;
 }
 
 const POLL_INITIAL_INTERVAL_MS = 2000;
@@ -165,13 +163,17 @@ export class ServiceRenderer extends BaseRenderer {
         );
       }
 
-      // Write the image to disk
+      // Download image from service and write to disk
       const dir = path.dirname(outputPath);
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       }
 
-      const buffer = Buffer.from(cached.imageBase64, 'base64');
+      const imgResp = await fetch(cached.imageUrl);
+      if (!imgResp.ok) {
+        return createErrorResult(frame, penFilePath, `Failed to download image: ${imgResp.status}`);
+      }
+      const buffer = Buffer.from(await imgResp.arrayBuffer());
       fs.writeFileSync(outputPath, buffer);
 
       const result = createSuccessResult(frame, penFilePath, outputPath);
@@ -276,7 +278,6 @@ export class ServiceRenderer extends BaseRenderer {
     const frameMap = new Map<string, CachedFrame>();
     for (const screenshot of data.screenshots) {
       frameMap.set(screenshot.frameId, {
-        imageBase64: screenshot.imageBase64,
         format: screenshot.format,
         width: screenshot.width,
         height: screenshot.height,
