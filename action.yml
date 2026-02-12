@@ -11,11 +11,6 @@ inputs:
     description: 'GitHub token for API access (usually secrets.GITHUB_TOKEN)'
     required: true
 
-  pen-files:
-    description: 'Glob pattern to match .pen files'
-    required: false
-    default: '**/*.pen'
-
   renderer:
     description: 'Renderer mode: "service" (generates screenshots) or "metadata" (frame info only)'
     required: false

@@ -40,7 +40,7 @@ async function run(): Promise<void> {
     const prContext = getPRContext();
 
     // Get changed .pen files
-    const changedFiles = await getChangedPenFiles(octokit, inputs.penFilesPattern);
+    const changedFiles = await getChangedPenFiles(octokit);
 
     if (changedFiles.length === 0) {
       core.info('No .pen files changed in this PR');

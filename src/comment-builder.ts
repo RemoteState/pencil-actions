@@ -16,6 +16,13 @@ import {
 export const COMMENT_MARKER = '<!-- pencil-design-review -->';
 
 /**
+ * Escape markdown special characters in user-controlled strings
+ */
+function escapeMarkdown(text: string): string {
+  return text.replace(/[[\]()|\\_*`~#>!]/g, '\\$&');
+}
+
+/**
  * Build the full PR comment markdown
  */
 export function buildComment(data: CommentData): string {
@@ -115,12 +122,12 @@ function buildFileSection(file: PenFileCommentData): string {
 function buildFrameWithScreenshot(frame: FrameCommentData): string {
   const lines: string[] = [];
 
-  lines.push(`#### ${frame.name}`);
+  lines.push(`#### ${escapeMarkdown(frame.name)}`);
 
   if (frame.error) {
-    lines.push(`> ⚠️ Failed to render: ${frame.error}`);
+    lines.push(`> ⚠️ Failed to render: ${escapeMarkdown(frame.error)}`);
   } else if (frame.screenshotUrl) {
-    lines.push(`![${frame.name}](${frame.screenshotUrl})`);
+    lines.push(`![${escapeMarkdown(frame.name)}](${frame.screenshotUrl})`);
   } else if (frame.screenshotPath) {
     // If we have a path but no URL, show the path as reference
     lines.push(`> Screenshot saved to: \`${frame.screenshotPath}\``);
@@ -139,8 +146,8 @@ function buildFrameTable(frames: FrameCommentData[]): string {
   ];
 
   for (const frame of frames) {
-    const status = frame.error ? `❌ ${frame.error}` : '✅ OK';
-    lines.push(`| ${frame.name} | \`${frame.id}\` | ${status} |`);
+    const status = frame.error ? `❌ ${escapeMarkdown(frame.error)}` : '✅ OK';
+    lines.push(`| ${escapeMarkdown(frame.name)} | \`${frame.id}\` | ${status} |`);
   }
 
   return lines.join('\n');

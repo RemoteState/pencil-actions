@@ -4,7 +4,6 @@
 
 export interface ActionInputs {
   githubToken: string;
-  penFilesPattern: string;
   renderer: RendererType;
   serviceUrl?: string;      // URL for pencil-screenshot-service
   serviceApiKey?: string;   // API key for screenshot service

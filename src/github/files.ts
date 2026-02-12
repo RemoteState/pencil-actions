@@ -14,8 +14,7 @@ type Octokit = ReturnType<typeof github.getOctokit>;
  * Get all .pen files that were changed in the current PR
  */
 export async function getChangedPenFiles(
-  octokit: Octokit,
-  pattern: string = '**/*.pen'
+  octokit: Octokit
 ): Promise<PenFile[]> {
   const context = github.context;
 

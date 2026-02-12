@@ -25,7 +25,6 @@ export function getInputs(): ActionInputs {
 
   const inputs: ActionInputs = {
     githubToken: core.getInput('github-token', { required: true }),
-    penFilesPattern: core.getInput('pen-files') || '**/*.pen',
     renderer: renderer,
     serviceUrl: serviceUrl || undefined,
     serviceApiKey: serviceApiKey || undefined,
