@@ -6414,7 +6414,7 @@
   "variables": {
     "--bg-card": {
       "type": "color",
-      "value": "#E8E4DC"
+      "value": "#E0DCD4"
     },
     "--bg-dark-card": {
       "type": "color",
