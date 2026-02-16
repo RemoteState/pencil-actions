@@ -1,6 +1,6 @@
 # Pen Design Review
 
-Automatically preview `.pen` design files in pull requests. When design files change, this action renders every frame and posts inline screenshots directly in your PR.
+Automatically preview `.pen` design files in pull requests. When design files change, this action detects what changed and posts screenshots directly in your PR — with before/after comparisons for modified frames.
 
 **Code review, but for designs.**
 
@@ -30,51 +30,49 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-That's it. Every PR that touches a `.pen` file will get a comment like this:
-
-> ### Design Review
->
-> **1** design file (**1** modified) | **8** frames detected | **8** rendered
->
-> | Frame | Description |
-> |-------|-------------|
-> | **Dashboard** | Key metrics overview with interview trends chart and activity feed |
-> | **Interviews** | Interview management table with status badges and filtering |
-> | **Candidates** | Candidate profile cards with AI scores and evaluation status |
-> | **Questions Bank** | AI-generated question templates organized by category |
-> | **AI Settings** | Model configuration and evaluation criteria settings |
-> | **Analytics** | Score distribution charts and top performing positions |
-> | **Job Positions** | Open positions management with application counts |
-> | **Settings** | System configuration, integrations, and preferences |
->
-> ![Interview Express Dashboard](https://camo.githubusercontent.com/85cddabfaaec97ad05898511953cc95ec2e59eaf7a7b3c8649e811ffa909487a/68747470733a2f2f70656e63696c2e72656d6f746573746174652e636f6d2f696d616765732f65613366333563372d653265352d343436312d616662612d3564616466363361303966362e77656270)
+That's it. Every PR that touches a `.pen` file will get a comment showing exactly what changed — modified frames get side-by-side before/after screenshots, new frames get full previews, and unchanged frames are listed in a collapsed section.
 
 ## How It Works
 
 1. PR is opened or updated with `.pen` file changes
-2. The action detects changed design files
-3. Each frame is rendered as a screenshot
-4. A PR comment is posted with inline image previews
+2. The action detects changed design files and fetches the base branch version
+3. Frames are compared — only changed frames are rendered (added, modified, removed)
+4. A PR comment is posted with before/after screenshots for modified frames
 5. On subsequent pushes, the comment is updated in place
 
-## Pricing
+### Review Modes
 
-| Tier | Price | Screenshots / month | Auth |
-|------|-------|---------------------|------|
-| **Free** | $0 | 100 per repo | GitHub OIDC (automatic) |
-| **Pro** | $10/month | 1,000 per repo | API key |
-| **Enterprise** | Custom | Unlimited | API key |
+| Mode | Description | Default |
+|------|-------------|---------|
+| **`diff`** | Shows only changed frames with before/after comparison. Unchanged frames collapsed. | Yes |
+| **`full`** | Renders every frame in every changed file. No comparison. | — |
 
-The free tier works out of the box with no API key — authentication happens automatically via GitHub's OIDC tokens. Just add `id-token: write` to your workflow permissions.
+### Example PR Comment (Diff Mode)
 
-For paid tiers, [contact us](https://www.remotestate.com/) for an API key, then add it to your workflow:
+> ### Design Review
+>
+> **1** design file (**1** modified)
+> Frames: **3** modified, **6** unchanged
+>
+> #### Modified Frames
+>
+> **Dashboard**
+> | Before | After |
+> |--------|-------|
+> | ![before](screenshot) | ![after](screenshot) |
+>
+> <details><summary>6 unchanged frames</summary>
+>
+> - Interviews, Candidates, Questions Bank...
+> </details>
 
-```yaml
-- uses: remotestate/pencil-actions@v1
-  with:
-    github-token: ${{ secrets.GITHUB_TOKEN }}
-    service-api-key: ${{ secrets.PEN_API_KEY }}
-```
+## Free to Use
+
+**1,000 screenshots per month, per repo. No API key needed.**
+
+Authentication happens automatically via GitHub's OIDC tokens — just add `id-token: write` to your workflow permissions and you're set.
+
+Need more? [Talk to us](https://www.remotestate.com/contactus) about your project and get **10x more credits**. We'd love to hear what you're building.
 
 ## Configuration
 
@@ -83,15 +81,16 @@ For paid tiers, [contact us](https://www.remotestate.com/) for an API key, then 
 | Input | Default | Description |
 |-------|---------|-------------|
 | `github-token` | *required* | GitHub token for API access |
-| `service-api-key` | — | API key for paid tier. Omit for free tier (OIDC) |
-| `pen-files` | `**/*.pen` | Glob pattern to match design files |
+| `review-mode` | `diff` | `diff` (before/after comparison) or `full` (render all frames) |
+| `comment-id` | — | Namespace for PR comments. Use when running multiple workflows to avoid overwriting |
+| `comment-mode` | `update` | `create` (always new comment), `update` (in-place), or `none` |
 | `image-format` | `webp` | Output format: `webp`, `png`, or `jpeg` |
 | `image-scale` | `2` | Export scale: `1`, `2`, or `3` |
 | `image-quality` | `90` | Quality for webp/jpeg (1-100) |
 | `max-frames-per-file` | `20` | Max frames to render per file (0 = unlimited) |
-| `comment-mode` | `update` | `create` (always new), `update` (in-place), or `none` |
 | `upload-artifacts` | `true` | Upload screenshots as workflow artifacts |
 | `renderer` | `service` | `service` (screenshots) or `metadata` (frame info only) |
+| `service-api-key` | — | API key (optional, for higher limits) |
 
 ### Outputs
 
@@ -104,27 +103,53 @@ For paid tiers, [contact us](https://www.remotestate.com/) for an API key, then 
 
 ### Permissions
 
-The workflow needs these permissions:
-
 ```yaml
 permissions:
   contents: read        # Read .pen files from the repo
   pull-requests: write  # Post PR comments
-  id-token: write       # Free tier OIDC authentication (not needed with API key)
+  id-token: write       # OIDC authentication (free tier)
 ```
 
 ## Examples
 
-### Only review specific directories
+### Diff mode (default) — show only what changed
 
 ```yaml
 - uses: remotestate/pencil-actions@v1
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
-    pen-files: 'designs/**/*.pen'
 ```
 
-### PNG output at 3x scale
+### Full mode — render every frame
+
+```yaml
+- uses: remotestate/pencil-actions@v1
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    review-mode: full
+```
+
+### Multiple workflows on the same PR
+
+Use `comment-id` to prevent workflows from overwriting each other:
+
+```yaml
+# Workflow 1: Diff review
+- uses: remotestate/pencil-actions@v1
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    review-mode: diff
+    comment-id: diff
+
+# Workflow 2: Full screenshots
+- uses: remotestate/pencil-actions@v1
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    review-mode: full
+    comment-id: full
+```
+
+### High-res PNG output
 
 ```yaml
 - uses: remotestate/pencil-actions@v1
@@ -134,21 +159,18 @@ permissions:
     image-scale: 3
 ```
 
-### Skip commenting, just generate artifacts
-
-```yaml
-- uses: remotestate/pencil-actions@v1
-  with:
-    github-token: ${{ secrets.GITHUB_TOKEN }}
-    comment-mode: none
-    upload-artifacts: true
-```
-
 ## What are .pen files?
 
 `.pen` files are design files created with [Pencil](https://pencil.dev) — a design tool for creating web and mobile interfaces. They're JSON-based, version-control friendly, and contain frames (screens/artboards) that this action renders as images.
 
-For example, a SaaS admin dashboard like **Interview Express** might contain 8 frames: Dashboard, Interviews, Candidates, Questions Bank, AI Settings, Analytics, Job Positions, and Settings — each rendered as a separate preview in your PR comment.
+## Talk to Us
+
+We built this at [RemoteState](https://www.remotestate.com/) because we think design review should be as easy as code review.
+
+Using Pen Design Review for your project? We'd love to hear about it. [Tell us what you're building](https://www.remotestate.com/contactus) and get **10,000 screenshots/month** — on us.
+
+- Have feedback or feature requests? [Open an issue](https://github.com/RemoteState/pencil-actions/issues)
+- Want to chat? [Contact us](https://www.remotestate.com/contactus)
 
 ## Links
 
