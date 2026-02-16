@@ -4,6 +4,7 @@
  * Detects changed .pen files in a pull request
  */
 
+import * as fs from 'fs';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { PenFile, FileStatus } from '../types';
@@ -47,8 +48,9 @@ export async function getChangedPenFiles(
       if (file.filename.endsWith('.pen')) {
         changedFiles.push({
           path: file.filename,
+          previousPath: file.previous_filename,
           status: mapFileStatus(file.status),
-          frames: [], // Will be populated by the parser
+          frames: [],
         });
       }
     }
@@ -114,4 +116,55 @@ export function getPRContext(): {
  */
 export function isPullRequestEvent(): boolean {
   return !!github.context.payload.pull_request;
+}
+
+/**
+ * Fetch a file's content from a specific git ref (commit SHA or branch).
+ * Returns base64-encoded content, or null if the file doesn't exist at that ref.
+ */
+export async function getFileContentAtRef(
+  octokit: Octokit,
+  filePath: string,
+  ref: string
+): Promise<string | null> {
+  const context = github.context;
+  try {
+    const response = await octokit.rest.repos.getContent({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      path: filePath,
+      ref,
+    });
+
+    const data = response.data;
+    if (!Array.isArray(data) && 'content' in data && data.content) {
+      // GitHub returns base64 with newlines; strip them
+      return data.content.replace(/\n/g, '');
+    }
+
+    // If content is empty/truncated, fall back to blob API
+    if (!Array.isArray(data) && 'sha' in data) {
+      const blobResp = await octokit.rest.git.getBlob({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        file_sha: data.sha,
+      });
+      return blobResp.data.content.replace(/\n/g, '');
+    }
+
+    return null;
+  } catch (error: unknown) {
+    if (error instanceof Error && 'status' in error && (error as any).status === 404) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+/**
+ * Read a file from the local checkout and return its content as base64.
+ */
+export function readLocalFileAsBase64(filePath: string): string {
+  const content = fs.readFileSync(filePath);
+  return content.toString('base64');
 }

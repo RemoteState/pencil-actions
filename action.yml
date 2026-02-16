@@ -16,6 +16,11 @@ inputs:
     required: false
     default: 'service'
 
+  review-mode:
+    description: 'Review mode: "full" (render all frames) or "diff" (show only changes with before/after comparison)'
+    required: false
+    default: 'full'
+
   service-url:
     description: 'Screenshot rendering API URL'
     required: false
