@@ -1,0 +1,31 @@
+# Example: Diff Design Review (Before/After Comparison)
+# Shows only changed frames with side-by-side before/after screenshots.
+# Uses the pencil-screenshot-service diff endpoint.
+
+name: Design Review (Diff)
+on:
+  pull_request:
+    paths:
+      - '**/*.pen'
+
+jobs:
+  design-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write    # Required for OIDC authentication
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Design Review (Diff Mode)
+        uses: remotestate/pencil-actions@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          renderer: service
+          service-url: https://pencil.remotestate.com
+          review-mode: diff    # Only show changed frames with before/after
+          image-format: webp
+          image-scale: 2
