@@ -4,6 +4,18 @@ Automatically preview `.pen` design files in pull requests. When design files ch
 
 **Code review, but for designs.**
 
+### See it in action — a real diff from [PR #4](https://github.com/RemoteState/pencil-actions/pull/4):
+
+<table>
+<tr><th>Before</th><th>After</th></tr>
+<tr>
+<td><a href="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/b379987c-22bf-43e8-a3c6-5531ee209127.webp"><img src="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/b379987c-22bf-43e8-a3c6-5531ee209127.webp" alt="Dashboard — Before" width="400" /></a></td>
+<td><a href="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/5064ebcc-1927-403f-9002-2eecb87156b3.webp"><img src="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/5064ebcc-1927-403f-9002-2eecb87156b3.webp" alt="Dashboard — After" width="400" /></a></td>
+</tr>
+</table>
+
+<sup>Dashboard frame — 3 frames changed, 6 unchanged. Only the changes are shown.</sup>
+
 ## Quick Start
 
 Add `.github/workflows/design-review.yml` to your repository:
@@ -49,21 +61,28 @@ That's it. Every PR that touches a `.pen` file will get a comment showing exactl
 
 ### Example PR Comment (Diff Mode)
 
-> ### Design Review
+Here's what the action posts in your PR — [see it live on PR #4](https://github.com/RemoteState/pencil-actions/pull/4):
+
+> **Design Review**
 >
 > **1** design file (**1** modified)
 > Frames: **3** modified, **6** unchanged
 >
-> #### Modified Frames
->
 > **Dashboard**
+>
 > | Before | After |
 > |--------|-------|
-> | ![before](screenshot) | ![after](screenshot) |
+> | <img src="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/b379987c-22bf-43e8-a3c6-5531ee209127.webp" alt="Before" width="300" /> | <img src="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/5064ebcc-1927-403f-9002-2eecb87156b3.webp" alt="After" width="300" /> |
+>
+> **Analytics**
+>
+> | Before | After |
+> |--------|-------|
+> | <img src="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/73b1d5ef-a9b4-45d1-a56b-4bd3d990016a.webp" alt="Before" width="300" /> | <img src="https://pub-a203ebe46f02455ea2c5567319578e96.r2.dev/8a821bbe-bd45-4e93-8298-5ef46069fef4/cfe763b6-7926-4ad7-854d-e4209c96ee71.webp" alt="After" width="300" /> |
 >
 > <details><summary>6 unchanged frames</summary>
 >
-> - Interviews, Candidates, Questions Bank...
+> Interviews, Candidates, Questions Bank, AI Settings, Job Positions, Components
 > </details>
 
 ## Free to Use
