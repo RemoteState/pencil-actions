@@ -26,6 +26,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           renderer: service
           service-url: https://pencil.remotestate.com
-          review-mode: diff    # Only show changed frames with before/after
+          review-mode: diff
+          comment-id: diff
           image-format: webp
           image-scale: 2

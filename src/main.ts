@@ -50,8 +50,9 @@ async function run(): Promise<void> {
         await postComment(
           octokit,
           prContext.prNumber,
-          buildNoChangesComment(),
-          inputs.commentMode
+          buildNoChangesComment(inputs.commentId),
+          inputs.commentMode,
+          inputs.commentId
         );
       }
 
@@ -183,16 +184,17 @@ async function runFullMode(
         commitSha: prContext.headSha,
       };
 
-      const commentBody = buildComment(commentData);
-      const commentId = await postComment(
+      const commentBody = buildComment(commentData, inputs.commentId);
+      const postedCommentId = await postComment(
         octokit,
         prContext.prNumber,
         commentBody,
-        inputs.commentMode
+        inputs.commentMode,
+        inputs.commentId
       );
 
-      if (commentId) {
-        core.setOutput('comment-id', commentId.toString());
+      if (postedCommentId) {
+        core.setOutput('comment-id', postedCommentId.toString());
       }
     }
 
@@ -292,11 +294,11 @@ async function runDiffMode(
         commitSha: prContext.headSha,
       };
 
-      const commentBody = buildDiffComment(commentData);
-      const commentId = await postComment(octokit, prContext.prNumber, commentBody, inputs.commentMode);
+      const commentBody = buildDiffComment(commentData, inputs.commentId);
+      const postedCommentId = await postComment(octokit, prContext.prNumber, commentBody, inputs.commentMode, inputs.commentId);
 
-      if (commentId) {
-        core.setOutput('comment-id', commentId.toString());
+      if (postedCommentId) {
+        core.setOutput('comment-id', postedCommentId.toString());
       }
     }
 

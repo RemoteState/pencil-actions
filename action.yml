@@ -19,7 +19,7 @@ inputs:
   review-mode:
     description: 'Review mode: "full" (render all frames) or "diff" (show only changes with before/after comparison)'
     required: false
-    default: 'full'
+    default: 'diff'
 
   service-url:
     description: 'Screenshot rendering API URL'
@@ -39,6 +39,11 @@ inputs:
     description: 'How to post comments: "create" (always new), "update" (update existing), "none" (skip commenting)'
     required: false
     default: 'update'
+
+  comment-id:
+    description: 'Unique identifier to namespace PR comments. Allows multiple workflows to post separate comments on the same PR without overwriting each other.'
+    required: false
+    default: ''
 
   upload-artifacts:
     description: 'Whether to upload screenshots as workflow artifacts'

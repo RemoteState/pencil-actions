@@ -7,7 +7,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { CommentMode } from '../types';
-import { COMMENT_MARKER } from '../comment-builder';
+import { getCommentMarker } from '../comment-builder';
 
 type Octokit = ReturnType<typeof github.getOctokit>;
 
@@ -18,7 +18,8 @@ export async function postComment(
   octokit: Octokit,
   prNumber: number,
   body: string,
-  mode: CommentMode
+  mode: CommentMode,
+  commentId?: string
 ): Promise<number | undefined> {
   if (mode === 'none') {
     core.info('Comment mode is "none", skipping PR comment');
@@ -31,7 +32,7 @@ export async function postComment(
 
   if (mode === 'update') {
     // Try to find and update existing comment
-    const existingCommentId = await findExistingComment(octokit, prNumber);
+    const existingCommentId = await findExistingComment(octokit, prNumber, commentId);
 
     if (existingCommentId) {
       core.info(`Updating existing comment #${existingCommentId}`);
@@ -63,7 +64,8 @@ export async function postComment(
  */
 async function findExistingComment(
   octokit: Octokit,
-  prNumber: number
+  prNumber: number,
+  commentId?: string
 ): Promise<number | undefined> {
   const context = github.context;
   const owner = context.repo.owner;
@@ -83,8 +85,9 @@ async function findExistingComment(
         per_page: perPage,
       });
 
+      const marker = getCommentMarker(commentId);
       for (const comment of response.data) {
-        if (comment.body?.includes(COMMENT_MARKER)) {
+        if (comment.body?.includes(marker)) {
           return comment.id;
         }
       }
@@ -107,9 +110,10 @@ async function findExistingComment(
  */
 export async function deleteComment(
   octokit: Octokit,
-  prNumber: number
+  prNumber: number,
+  commentId?: string
 ): Promise<boolean> {
-  const existingCommentId = await findExistingComment(octokit, prNumber);
+  const existingCommentId = await findExistingComment(octokit, prNumber, commentId);
 
   if (!existingCommentId) {
     core.info('No existing comment found to delete');

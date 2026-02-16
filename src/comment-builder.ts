@@ -19,6 +19,17 @@ import {
 export const COMMENT_MARKER = '<!-- pencil-design-review -->';
 
 /**
+ * Build a namespaced comment marker. When commentId is provided,
+ * the marker includes it so multiple workflows can post separate comments.
+ */
+export function getCommentMarker(commentId?: string): string {
+  if (commentId) {
+    return `<!-- pencil-design-review:${commentId} -->`;
+  }
+  return COMMENT_MARKER;
+}
+
+/**
  * Escape markdown special characters in user-controlled strings
  */
 function escapeMarkdown(text: string): string {
@@ -28,9 +39,10 @@ function escapeMarkdown(text: string): string {
 /**
  * Build the full PR comment markdown
  */
-export function buildComment(data: CommentData): string {
+export function buildComment(data: CommentData, commentId?: string): string {
+  const marker = getCommentMarker(commentId);
   const lines: string[] = [
-    COMMENT_MARKER,
+    marker,
     '',
     '## 🎨 Design Review',
     '',
@@ -249,9 +261,10 @@ export function calculateSummary(files: PenFileCommentData[]): CommentSummary {
 /**
  * Build a minimal comment for when there are no design changes
  */
-export function buildNoChangesComment(): string {
+export function buildNoChangesComment(commentId?: string): string {
+  const marker = getCommentMarker(commentId);
   return [
-    COMMENT_MARKER,
+    marker,
     '',
     '## 🎨 Design Review',
     '',
@@ -265,9 +278,10 @@ export function buildNoChangesComment(): string {
 /**
  * Build a diff-mode PR comment.
  */
-export function buildDiffComment(data: DiffCommentData): string {
+export function buildDiffComment(data: DiffCommentData, commentId?: string): string {
+  const marker = getCommentMarker(commentId);
   const lines: string[] = [
-    COMMENT_MARKER,
+    marker,
     '',
     '## 🎨 Design Review',
     '',

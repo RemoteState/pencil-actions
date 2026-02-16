@@ -21,11 +21,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Design Review
-        uses: remotestate/pencil-actions@v1
+        uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           renderer: service
           service-url: https://pencil.remotestate.com
+          review-mode: full
+          comment-id: visual
           max-frames-per-file: 10
           image-format: webp
           image-scale: 3

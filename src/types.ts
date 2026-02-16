@@ -9,6 +9,7 @@ export interface ActionInputs {
   serviceApiKey?: string;   // API key for screenshot service
   outputDir: string;
   commentMode: CommentMode;
+  commentId: string;
   uploadArtifacts: boolean;
   includeDeleted: boolean;
   maxFramesPerFile: number;
