@@ -9,6 +9,7 @@ import {
   CommentMode,
   ImageFormat,
   ImageScale,
+  ReviewMode,
 } from './types';
 
 export function getInputs(): ActionInputs {
@@ -30,12 +31,14 @@ export function getInputs(): ActionInputs {
     serviceApiKey: serviceApiKey || undefined,
     outputDir: core.getInput('output-dir') || '.pencil-screenshots',
     commentMode: (core.getInput('comment-mode') as CommentMode) || 'update',
+    commentId: core.getInput('comment-id') || '',
     uploadArtifacts: core.getBooleanInput('upload-artifacts'),
     includeDeleted: core.getBooleanInput('include-deleted'),
     maxFramesPerFile: parseInt(core.getInput('max-frames-per-file') || '20', 10),
     imageFormat: (core.getInput('image-format') as ImageFormat) || 'webp',
     imageScale: parseInt(core.getInput('image-scale') || '2', 10) as ImageScale,
     imageQuality: parseInt(core.getInput('image-quality') || '90', 10),
+    reviewMode: (core.getInput('review-mode') as ReviewMode) || 'diff',
   };
 
   // Mask sensitive inputs
@@ -73,5 +76,9 @@ export function validateInputs(inputs: ActionInputs): void {
 
   if (inputs.maxFramesPerFile < 0) {
     throw new Error('max-frames-per-file must be a non-negative integer');
+  }
+
+  if (!['full', 'diff'].includes(inputs.reviewMode)) {
+    throw new Error(`Invalid review-mode: ${inputs.reviewMode}. Must be "full" or "diff"`);
   }
 }

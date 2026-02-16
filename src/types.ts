@@ -9,23 +9,27 @@ export interface ActionInputs {
   serviceApiKey?: string;   // API key for screenshot service
   outputDir: string;
   commentMode: CommentMode;
+  commentId: string;
   uploadArtifacts: boolean;
   includeDeleted: boolean;
   maxFramesPerFile: number;
   imageFormat: ImageFormat;
   imageScale: ImageScale;   // Export scale: 1, 2, or 3
   imageQuality: number;     // Quality for webp/jpeg: 1-100
+  reviewMode: ReviewMode;
 }
 
 export type RendererType = 'metadata' | 'service';
 export type CommentMode = 'create' | 'update' | 'none';
 export type ImageFormat = 'png' | 'jpeg' | 'webp';
 export type ImageScale = 1 | 2 | 3;
+export type ReviewMode = 'full' | 'diff';
 
 export interface PenFile {
   path: string;
   status: FileStatus;
   frames: PenFrame[];
+  previousPath?: string;
 }
 
 export type FileStatus = 'added' | 'modified' | 'deleted' | 'renamed';
@@ -121,6 +125,78 @@ export interface PenDocument {
   children?: PenNode[];
   variables?: Record<string, unknown>;
   [key: string]: unknown;
+}
+
+// ── Diff response types (mirrors service DiffResponse) ───────
+
+export interface DiffFrameScreenshot {
+  frameId: string;
+  frameName: string;
+  width: number;
+  height: number;
+  imageUrl: string;
+  format: string;
+  scale: number;
+}
+
+export interface DiffModifiedFrame {
+  frameId: string;
+  frameName: string;
+  base: DiffFrameScreenshot;
+  head: DiffFrameScreenshot;
+}
+
+export interface DiffFrameInfo {
+  frameId: string;
+  frameName: string;
+  width?: number;
+  height?: number;
+}
+
+export interface DiffSummary {
+  added: number;
+  removed: number;
+  modified: number;
+  unchanged: number;
+}
+
+export interface DiffResponse {
+  type: 'diff';
+  success: boolean;
+  summary: DiffSummary;
+  added: DiffFrameScreenshot[];
+  removed: DiffFrameInfo[];
+  modified: DiffModifiedFrame[];
+  unchanged: DiffFrameInfo[];
+  errors?: Array<{ frameId: string; frameName: string; error: string }>;
+}
+
+// ── Diff comment data types ──────────────────────────────────
+
+export interface DiffFileCommentData {
+  path: string;
+  status: FileStatus;
+  diff?: DiffResponse;
+  frames?: FrameCommentData[];
+  error?: string;
+}
+
+export interface DiffCommentData {
+  files: DiffFileCommentData[];
+  summary: DiffCommentSummary;
+  prNumber: number;
+  commitSha: string;
+}
+
+export interface DiffCommentSummary {
+  totalFiles: number;
+  addedFiles: number;
+  modifiedFiles: number;
+  deletedFiles: number;
+  totalAddedFrames: number;
+  totalModifiedFrames: number;
+  totalRemovedFrames: number;
+  totalUnchangedFrames: number;
 }
 
 /**

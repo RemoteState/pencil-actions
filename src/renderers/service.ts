@@ -19,7 +19,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { BaseRenderer, createSuccessResult, createErrorResult } from './base';
-import { PenFrame, ScreenshotResult, ImageFormat, ImageScale } from '../types';
+import { PenFrame, ScreenshotResult, ImageFormat, ImageScale, DiffResponse } from '../types';
 
 interface ServiceRendererOptions {
   serviceUrl: string;
@@ -59,7 +59,7 @@ interface JobStatusResponse {
   createdAt: number;
   startedAt?: number;
   completedAt?: number;
-  result?: ServiceResponse;
+  result?: unknown;
   error?: string;
 }
 
@@ -195,6 +195,64 @@ export class ServiceRenderer extends BaseRenderer {
   }
 
   /**
+   * Submit a diff job: send base and head .pen files, poll for diff results.
+   */
+  async fetchDiff(
+    basePenBase64: string,
+    headPenBase64: string
+  ): Promise<DiffResponse> {
+    await this.ensureFreshToken();
+
+    const submitUrl = `${this.serviceUrl}/api/v1/diff`;
+    const submitResp = await fetch(submitUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authToken}`,
+      },
+      body: JSON.stringify({
+        basePenFile: basePenBase64,
+        headPenFile: headPenBase64,
+        format: this.imageFormat,
+        scale: this.imageScale,
+        quality: this.imageQuality,
+      }),
+    });
+
+    if (!submitResp.ok) {
+      const body = await submitResp.text();
+      throw new Error(`Diff service returned ${submitResp.status}: ${body}`);
+    }
+
+    const submitData = (await submitResp.json()) as JobSubmitResponse;
+    core.info(`Diff job ${submitData.jobId} submitted (queue position: ${submitData.queuePosition})`);
+
+    // Log usage headers if present
+    const usageCurrent = submitResp.headers.get('X-Usage-Current');
+    const usageLimit = submitResp.headers.get('X-Usage-Limit');
+    const usageRemaining = submitResp.headers.get('X-Usage-Remaining');
+    if (usageCurrent) {
+      core.info(`Usage: ${usageCurrent}/${usageLimit} (${usageRemaining} remaining)`);
+    }
+
+    // Poll for completion (reuses existing polling logic)
+    const result = await this.pollForCompletion(submitData.jobId) as DiffResponse;
+
+    if (result.errors && result.errors.length > 0) {
+      for (const err of result.errors) {
+        core.warning(`Diff error for frame "${err.frameName}" (${err.frameId}): ${err.error}`);
+      }
+    }
+
+    core.info(
+      `Diff complete: ${result.summary.added} added, ${result.summary.modified} modified, ` +
+      `${result.summary.removed} removed, ${result.summary.unchanged} unchanged`
+    );
+
+    return result;
+  }
+
+  /**
    * Request a fresh OIDC token from GitHub Actions.
    */
   private async refreshOidcToken(): Promise<void> {
@@ -272,7 +330,7 @@ export class ServiceRenderer extends BaseRenderer {
     }
 
     // Poll for completion
-    const data = await this.pollForCompletion(submitData.jobId);
+    const data = await this.pollForCompletion(submitData.jobId) as ServiceResponse;
 
     // Cache all returned screenshots
     const frameMap = new Map<string, CachedFrame>();
@@ -303,7 +361,7 @@ export class ServiceRenderer extends BaseRenderer {
   /**
    * Poll GET /jobs/:jobId with exponential backoff until completed or failed.
    */
-  private async pollForCompletion(jobId: string): Promise<ServiceResponse> {
+  private async pollForCompletion(jobId: string): Promise<unknown> {
     const pollUrl = `${this.serviceUrl}/api/v1/jobs/${jobId}`;
     const startTime = Date.now();
     let interval = POLL_INITIAL_INTERVAL_MS;

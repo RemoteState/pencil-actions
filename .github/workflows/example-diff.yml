@@ -1,8 +1,8 @@
-# Example: Visual Design Review (With Screenshots)
-# Uses the pencil-screenshot-service for high-fidelity rendering.
-# No API key needed — authenticates via GitHub OIDC (free tier: 100 screenshots/month).
+# Example: Diff Design Review (Before/After Comparison)
+# Shows only changed frames with side-by-side before/after screenshots.
+# Uses the pencil-screenshot-service diff endpoint.
 
-name: Design Review (Visual)
+name: Design Review (Diff)
 on:
   pull_request:
     paths:
@@ -20,14 +20,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Design Review
+      - name: Run Design Review (Diff Mode)
         uses: remotestate/pencil-actions@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           renderer: service
           service-url: https://pencil.remotestate.com
-          review-mode: full
-          comment-id: visual
-          max-frames-per-file: 10
+          review-mode: diff
+          comment-id: diff
           image-format: webp
-          image-scale: 3
+          image-scale: 2

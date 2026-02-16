@@ -10,10 +10,24 @@ import {
   FrameCommentData,
   CommentSummary,
   FileStatus,
+  DiffFileCommentData,
+  DiffCommentData,
+  DiffCommentSummary,
 } from './types';
 
 // Unique identifier for our comments (for upsert logic)
 export const COMMENT_MARKER = '<!-- pencil-design-review -->';
+
+/**
+ * Build a namespaced comment marker. When commentId is provided,
+ * the marker includes it so multiple workflows can post separate comments.
+ */
+export function getCommentMarker(commentId?: string): string {
+  if (commentId) {
+    return `<!-- pencil-design-review:${commentId} -->`;
+  }
+  return COMMENT_MARKER;
+}
 
 /**
  * Escape markdown special characters in user-controlled strings
@@ -25,9 +39,10 @@ function escapeMarkdown(text: string): string {
 /**
  * Build the full PR comment markdown
  */
-export function buildComment(data: CommentData): string {
+export function buildComment(data: CommentData, commentId?: string): string {
+  const marker = getCommentMarker(commentId);
   const lines: string[] = [
-    COMMENT_MARKER,
+    marker,
     '',
     '## 🎨 Design Review',
     '',
@@ -246,13 +261,196 @@ export function calculateSummary(files: PenFileCommentData[]): CommentSummary {
 /**
  * Build a minimal comment for when there are no design changes
  */
-export function buildNoChangesComment(): string {
+export function buildNoChangesComment(commentId?: string): string {
+  const marker = getCommentMarker(commentId);
   return [
-    COMMENT_MARKER,
+    marker,
     '',
     '## 🎨 Design Review',
     '',
     '_No `.pen` design files were changed in this PR._',
     '',
   ].join('\n');
+}
+
+// ── Diff mode comment building ───────────────────────────────
+
+/**
+ * Build a diff-mode PR comment.
+ */
+export function buildDiffComment(data: DiffCommentData, commentId?: string): string {
+  const marker = getCommentMarker(commentId);
+  const lines: string[] = [
+    marker,
+    '',
+    '## 🎨 Design Review',
+    '',
+    buildDiffSummarySection(data.summary),
+    '',
+  ];
+
+  for (const file of data.files) {
+    lines.push(buildDiffFileSection(file));
+    lines.push('');
+  }
+
+  lines.push('---');
+  lines.push(buildFooter(data.commitSha));
+  return lines.join('\n');
+}
+
+/**
+ * Build the summary section for diff mode.
+ */
+function buildDiffSummarySection(summary: DiffCommentSummary): string {
+  const fileParts: string[] = [];
+  if (summary.addedFiles > 0) fileParts.push(`**${summary.addedFiles}** added`);
+  if (summary.modifiedFiles > 0) fileParts.push(`**${summary.modifiedFiles}** modified`);
+  if (summary.deletedFiles > 0) fileParts.push(`**${summary.deletedFiles}** deleted`);
+  const filesSummary = fileParts.length > 0 ? fileParts.join(', ') : 'No changes';
+
+  const lines = [
+    `📁 **${summary.totalFiles}** design file${summary.totalFiles !== 1 ? 's' : ''} (${filesSummary})`,
+  ];
+
+  const frameParts: string[] = [];
+  if (summary.totalAddedFrames > 0) frameParts.push(`**${summary.totalAddedFrames}** added`);
+  if (summary.totalModifiedFrames > 0) frameParts.push(`**${summary.totalModifiedFrames}** modified`);
+  if (summary.totalRemovedFrames > 0) frameParts.push(`**${summary.totalRemovedFrames}** removed`);
+  if (summary.totalUnchangedFrames > 0) frameParts.push(`**${summary.totalUnchangedFrames}** unchanged`);
+
+  if (frameParts.length > 0) {
+    lines.push(`🖼️ Frames: ${frameParts.join(', ')}`);
+  }
+
+  return lines.join('\n');
+}
+
+/**
+ * Build section for a single file in diff mode.
+ */
+function buildDiffFileSection(file: DiffFileCommentData): string {
+  const statusIcon = getStatusIcon(file.status);
+  const statusLabel = getStatusLabel(file.status);
+
+  const lines: string[] = [
+    `### ${statusIcon} \`${file.path}\` (${statusLabel})`,
+    '',
+  ];
+
+  if (file.error) {
+    lines.push(`> ⚠️ Error: ${escapeMarkdown(file.error)}`);
+    return lines.join('\n');
+  }
+
+  if (file.status === 'deleted') {
+    lines.push('_This design file was deleted._');
+    return lines.join('\n');
+  }
+
+  // Added files: show frames with screenshots (same as full mode)
+  if (file.status === 'added' && file.frames) {
+    for (const frame of file.frames) {
+      lines.push(buildFrameWithScreenshot(frame));
+      lines.push('');
+    }
+    return lines.join('\n');
+  }
+
+  // Modified/renamed files: show diff sections
+  if (file.diff) {
+    const diff = file.diff;
+
+    // Added frames section
+    if (diff.added.length > 0) {
+      lines.push('#### 🆕 Added Frames');
+      lines.push('');
+      for (const frame of diff.added) {
+        lines.push(`**${escapeMarkdown(frame.frameName)}**`);
+        lines.push(`![${escapeMarkdown(frame.frameName)}](${frame.imageUrl})`);
+        lines.push('');
+      }
+    }
+
+    // Modified frames section (before/after)
+    if (diff.modified.length > 0) {
+      lines.push('#### ✏️ Modified Frames');
+      lines.push('');
+      for (const mod of diff.modified) {
+        lines.push(`**${escapeMarkdown(mod.frameName)}**`);
+        lines.push('');
+        lines.push('<table>');
+        lines.push('<tr><th>Before</th><th>After</th></tr>');
+        lines.push('<tr>');
+        lines.push(`<td><img src="${mod.base.imageUrl}" alt="Before" /></td>`);
+        lines.push(`<td><img src="${mod.head.imageUrl}" alt="After" /></td>`);
+        lines.push('</tr>');
+        lines.push('</table>');
+        lines.push('');
+      }
+    }
+
+    // Removed frames section
+    if (diff.removed.length > 0) {
+      lines.push('#### 🗑️ Removed Frames');
+      lines.push('');
+      for (const frame of diff.removed) {
+        lines.push(`- ~~${escapeMarkdown(frame.frameName)}~~ (\`${frame.frameId}\`)`);
+      }
+      lines.push('');
+    }
+
+    // Unchanged frames (collapsed)
+    if (diff.unchanged.length > 0) {
+      lines.push(`<details><summary>✅ ${diff.unchanged.length} unchanged frame${diff.unchanged.length !== 1 ? 's' : ''}</summary>`);
+      lines.push('');
+      for (const frame of diff.unchanged) {
+        lines.push(`- ${escapeMarkdown(frame.frameName)} (\`${frame.frameId}\`)`);
+      }
+      lines.push('');
+      lines.push('</details>');
+      lines.push('');
+    }
+
+    // No changes at all
+    if (diff.added.length === 0 && diff.modified.length === 0 && diff.removed.length === 0) {
+      lines.push('_No frame-level changes detected._');
+    }
+  }
+
+  return lines.join('\n');
+}
+
+/**
+ * Calculate summary statistics for diff mode.
+ */
+export function calculateDiffSummary(files: DiffFileCommentData[]): DiffCommentSummary {
+  let addedFiles = 0, modifiedFiles = 0, deletedFiles = 0;
+  let totalAddedFrames = 0, totalModifiedFrames = 0, totalRemovedFrames = 0, totalUnchangedFrames = 0;
+
+  for (const file of files) {
+    switch (file.status) {
+      case 'added': addedFiles++; break;
+      case 'modified': case 'renamed': modifiedFiles++; break;
+      case 'deleted': deletedFiles++; break;
+    }
+
+    if (file.diff) {
+      totalAddedFrames += file.diff.summary.added;
+      totalModifiedFrames += file.diff.summary.modified;
+      totalRemovedFrames += file.diff.summary.removed;
+      totalUnchangedFrames += file.diff.summary.unchanged;
+    }
+
+    // Added files rendered in full mode contribute to "added" count
+    if (file.status === 'added' && file.frames) {
+      totalAddedFrames += file.frames.filter(f => !f.error).length;
+    }
+  }
+
+  return {
+    totalFiles: files.length,
+    addedFiles, modifiedFiles, deletedFiles,
+    totalAddedFrames, totalModifiedFrames, totalRemovedFrames, totalUnchangedFrames,
+  };
 }
