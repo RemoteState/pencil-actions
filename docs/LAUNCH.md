@@ -8,11 +8,11 @@ Capture these from https://github.com/RemoteState/pencil-actions/pull/4:
 
 1. **`docs/images/demo-diff-review.png`** — The diff mode PR comment showing before/after tables. This is the hero image for the README and social posts. Capture the section starting from "Design Review" header through the collapsed unchanged frames.
 
-2. **`docs/images/social-preview.png`** (1280x640px) — Social preview image for the GitHub repo. Upload via GitHub Settings > Social Preview. Could be a composite of the YAML config + the PR comment result.
+2. **`docs/images/social-preview.webp`** (1280x640px) — Social preview image for the GitHub repo. Upload via GitHub Settings > Social Preview. Could be a composite of the YAML config + the PR comment result.
 
-3. **`docs/images/yaml-config.png`** — Screenshot of just the 5-line workflow YAML from the Quick Start section.
+3. **`docs/images/yaml-config.webp`** — Screenshot of just the 5-line workflow YAML from the Quick Start section.
 
-4. **`docs/images/split-screen.png`** — Split-screen graphic: YAML config on left, PR comment result on right. This is the strongest visual for social posts ("You write THIS, you get THAT").
+4. **`docs/images/split-screen.webp`** — Split-screen graphic: YAML config on left, PR comment result on right. This is the strongest visual for social posts ("You write THIS, you get THAT").
 
 ### GitHub Repo (Already Done)
 
@@ -84,7 +84,7 @@ We open-sourced our internal design review tool.
 a visual diff. Before and after. Automatically.
 
 Here's what it looks like:
-[ATTACH: split-screen.png or demo-diff-review.png]
+[ATTACH: split-screen.webp or demo-diff-review.png]
 
 Why we built this:
 
@@ -135,7 +135,7 @@ Before/after screenshots for every design change. Automatic.
 → No API key needed
 → Works with @pencaboratory .pen files
 
-[ATTACH: split-screen.png]
+[ATTACH: split-screen.webp]
 
 github.com/RemoteState/pencil-actions
 ```
@@ -178,7 +178,7 @@ Actual visual diffs. In the PR. Where your team already reviews work.
 Tweet 5:
 Setup is 5 lines of YAML:
 
-[ATTACH: yaml-config.png]
+[ATTACH: yaml-config.webp]
 
 That's it. Free tier: 1,000 screenshots/month per repo.
 No API key, no account — just GitHub OIDC.

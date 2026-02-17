@@ -18,7 +18,7 @@ It shows:
 
 **Tip**: Use browser DevTools to set width ~900px for a clean capture. Crop tightly around the comment body.
 
-### 2. `social-preview.png` (1280x640px)
+### 2. `social-preview.webp` (1280x640px)
 
 **Purpose**: GitHub repo social preview (Settings > Social Preview)
 **Content**: Could be a composite showing the value prop:
@@ -26,12 +26,12 @@ It shows:
 - Right: the resulting PR comment with before/after screenshots
 - RemoteState branding
 
-### 3. `yaml-config.png`
+### 3. `yaml-config.webp`
 
 **Source**: The Quick Start YAML from the README
 **What to capture**: Just the clean 5-line workflow snippet
 
-### 4. `split-screen.png`
+### 4. `split-screen.webp`
 
 **Purpose**: Primary social media visual
 **Content**: Side-by-side showing:
