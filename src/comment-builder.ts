@@ -14,6 +14,7 @@ import {
   DiffCommentData,
   DiffCommentSummary,
 } from './types';
+import { createArtifactsSummary } from './github/artifacts';
 
 // Unique identifier for our comments (for upsert logic)
 export const COMMENT_MARKER = '<!-- pencil-design-review -->';
@@ -53,6 +54,13 @@ export function buildComment(data: CommentData, commentId?: string): string {
   // Add each file section
   for (const file of data.files) {
     lines.push(buildFileSection(file));
+    lines.push('');
+  }
+
+  // Add artifact download link
+  const artifactLink = createArtifactsSummary(data.artifactUrl, data.summary.successfulRenders);
+  if (artifactLink) {
+    lines.push(artifactLink);
     lines.push('');
   }
 
@@ -152,7 +160,7 @@ function buildFrameWithScreenshot(frame: FrameCommentData): string {
 }
 
 /**
- * Build a table of frames (metadata mode)
+ * Build a table of frames (fallback for render failures)
  */
 function buildFrameTable(frames: FrameCommentData[]): string {
   const lines: string[] = [
@@ -291,6 +299,14 @@ export function buildDiffComment(data: DiffCommentData, commentId?: string): str
 
   for (const file of data.files) {
     lines.push(buildDiffFileSection(file));
+    lines.push('');
+  }
+
+  // Add artifact download link
+  const totalRendered = data.summary.totalAddedFrames + data.summary.totalModifiedFrames;
+  const artifactLink = createArtifactsSummary(data.artifactUrl, totalRendered);
+  if (artifactLink) {
+    lines.push(artifactLink);
     lines.push('');
   }
 

@@ -2,7 +2,7 @@
  * Parser for .pen design files
  *
  * .pen files are JSON-based design files from Pencil.dev
- * This module extracts frame information for the metadata renderer
+ * This module extracts frame information from .pen design files
  */
 
 import * as fs from 'fs';

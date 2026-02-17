@@ -93,7 +93,6 @@ The base tier works automatically via GitHub's OIDC tokens — just add `id-toke
 | `image-quality` | `90` | Quality for webp/jpeg (1-100) |
 | `max-frames-per-file` | `20` | Max frames to render per file (0 = unlimited) |
 | `upload-artifacts` | `true` | Upload screenshots as workflow artifacts |
-| `renderer` | `service` | `service` (screenshots) or `metadata` (frame info only) |
 | `service-api-key` | — | API key (optional, for higher limits) |
 
 ### Outputs

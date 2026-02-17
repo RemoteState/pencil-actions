@@ -11,11 +11,6 @@ inputs:
     description: 'GitHub token for API access (usually secrets.GITHUB_TOKEN)'
     required: true
 
-  renderer:
-    description: 'Renderer mode: "service" (generates screenshots) or "metadata" (frame info only)'
-    required: false
-    default: 'service'
-
   review-mode:
     description: 'Review mode: "full" (render all frames) or "diff" (show only changes with before/after comparison)'
     required: false
@@ -27,13 +22,8 @@ inputs:
     default: 'https://pencil.remotestate.com'
 
   service-api-key:
-    description: 'API key for paid tier (unlimited screenshots). If omitted, uses free tier via GitHub OIDC (100 screenshots/month). Free tier requires "permissions: id-token: write".'
+    description: 'API key for higher limits (5,000/month). Without a key, free tier gives 1,000/month via GitHub OIDC (requires "permissions: id-token: write"). Contact us for 10,000/month.'
     required: false
-
-  output-dir:
-    description: 'Directory to store generated screenshots'
-    required: false
-    default: '.pencil-screenshots'
 
   comment-mode:
     description: 'How to post comments: "create" (always new), "update" (update existing), "none" (skip commenting)'

@@ -15,9 +15,9 @@ import { getChangedPenFiles, getPRContext, isPullRequestEvent, getFileContentAtR
 import { postComment } from './github/comments';
 import { uploadScreenshots, ensureScreenshotsDir } from './github/artifacts';
 import { buildComment, calculateSummary, buildNoChangesComment, buildDiffComment, calculateDiffSummary } from './comment-builder';
-import { MetadataRenderer } from './renderers/metadata';
 import { createServiceRenderer, ServiceRenderer } from './renderers/service';
-import { BaseRenderer } from './renderers/base';
+
+const OUTPUT_DIR = '.pencil-screenshots';
 
 async function run(): Promise<void> {
   try {
@@ -32,7 +32,6 @@ async function run(): Promise<void> {
     validateInputs(inputs);
 
     core.info('🎨 Starting Pencil Design Review');
-    core.info(`Renderer: ${inputs.renderer}`);
     core.info(`Review mode: ${inputs.reviewMode}`);
     core.info(`Comment mode: ${inputs.commentMode}`);
 
@@ -62,12 +61,9 @@ async function run(): Promise<void> {
 
     core.info(`Found ${changedFiles.length} changed .pen files`);
 
-    if (inputs.reviewMode === 'diff' && inputs.renderer === 'service') {
+    if (inputs.reviewMode === 'diff') {
       await runDiffMode(inputs, octokit, prContext, changedFiles);
     } else {
-      if (inputs.reviewMode === 'diff' && inputs.renderer !== 'service') {
-        core.warning('Diff review mode requires renderer: "service". Falling back to full mode.');
-      }
       await runFullMode(inputs, octokit, prContext, changedFiles);
     }
   } catch (error) {
@@ -96,7 +92,7 @@ async function runFullMode(
     const fileResults: PenFileCommentData[] = [];
     let totalFramesRendered = 0;
 
-    ensureScreenshotsDir(inputs.outputDir);
+    ensureScreenshotsDir(OUTPUT_DIR);
 
     for (const file of changedFiles) {
       core.info(`Processing: ${file.path}`);
@@ -128,7 +124,7 @@ async function runFullMode(
         const frameResults: FrameCommentData[] = [];
 
         for (const frame of framesToProcess) {
-          const outputPath = getOutputPath(inputs.outputDir, file.path, frame, inputs.imageFormat);
+          const outputPath = getOutputPath(OUTPUT_DIR, file.path, frame, inputs.imageFormat);
 
           const result = await renderer.renderFrame(file.path, frame, outputPath);
 
@@ -169,7 +165,7 @@ async function runFullMode(
     // Upload screenshots as artifacts
     let artifactUrl: string | undefined;
     if (inputs.uploadArtifacts) {
-      const uploadResult = await uploadScreenshots(inputs.outputDir);
+      const uploadResult = await uploadScreenshots(OUTPUT_DIR);
       artifactUrl = uploadResult.artifactUrl;
     }
 
@@ -182,6 +178,7 @@ async function runFullMode(
         summary,
         prNumber: prContext.prNumber,
         commitSha: prContext.headSha,
+        artifactUrl,
       };
 
       const commentBody = buildComment(commentData, inputs.commentId);
@@ -200,7 +197,7 @@ async function runFullMode(
 
     // Set outputs
     setOutputs({
-      screenshotsPath: inputs.outputDir,
+      screenshotsPath: OUTPUT_DIR,
       changedFiles: changedFiles.map(f => f.path),
       framesRendered: totalFramesRendered,
     });
@@ -227,7 +224,7 @@ async function runDiffMode(
     const fileResults: DiffFileCommentData[] = [];
     let totalFramesRendered = 0;
 
-    ensureScreenshotsDir(inputs.outputDir);
+    ensureScreenshotsDir(OUTPUT_DIR);
 
     for (const file of changedFiles) {
       core.info(`Processing (diff): ${file.path}`);
@@ -280,8 +277,10 @@ async function runDiffMode(
     }
 
     // Upload artifacts
+    let artifactUrl: string | undefined;
     if (inputs.uploadArtifacts) {
-      await uploadScreenshots(inputs.outputDir);
+      const uploadResult = await uploadScreenshots(OUTPUT_DIR);
+      artifactUrl = uploadResult.artifactUrl;
     }
 
     // Build and post comment
@@ -292,6 +291,7 @@ async function runDiffMode(
         summary,
         prNumber: prContext.prNumber,
         commitSha: prContext.headSha,
+        artifactUrl,
       };
 
       const commentBody = buildDiffComment(commentData, inputs.commentId);
@@ -303,7 +303,7 @@ async function runDiffMode(
     }
 
     setOutputs({
-      screenshotsPath: inputs.outputDir,
+      screenshotsPath: OUTPUT_DIR,
       changedFiles: changedFiles.map(f => f.path),
       framesRendered: totalFramesRendered,
     });
@@ -319,7 +319,7 @@ async function runDiffMode(
  * Used by diff mode for added files.
  */
 async function renderFullFile(
-  renderer: BaseRenderer,
+  renderer: ServiceRenderer,
   file: PenFile,
   inputs: ActionInputs
 ): Promise<FrameCommentData[]> {
@@ -331,7 +331,7 @@ async function renderFullFile(
 
   const frameResults: FrameCommentData[] = [];
   for (const frame of framesToProcess) {
-    const outputPath = getOutputPath(inputs.outputDir, file.path, frame, inputs.imageFormat);
+    const outputPath = getOutputPath(OUTPUT_DIR, file.path, frame, inputs.imageFormat);
     const result = await renderer.renderFrame(file.path, frame, outputPath);
     frameResults.push({
       id: frame.id,
@@ -347,22 +347,15 @@ async function renderFullFile(
 /**
  * Initialize the appropriate renderer based on configuration
  */
-async function initializeRenderer(inputs: ActionInputs): Promise<BaseRenderer> {
-  let renderer: BaseRenderer;
-
-  if (inputs.renderer === 'service' && inputs.serviceUrl) {
-    core.info('Using service renderer (pencil-screenshot-service)');
-    renderer = createServiceRenderer(
-      inputs.serviceUrl,
-      inputs.serviceApiKey,
-      inputs.imageFormat,
-      inputs.imageScale,
-      inputs.imageQuality
-    );
-  } else {
-    core.info('Using metadata renderer (no screenshots)');
-    renderer = new MetadataRenderer();
-  }
+async function initializeRenderer(inputs: ActionInputs): Promise<ServiceRenderer> {
+  core.info('Using service renderer (pencil-screenshot-service)');
+  const renderer = createServiceRenderer(
+    inputs.serviceUrl!,
+    inputs.serviceApiKey,
+    inputs.imageFormat,
+    inputs.imageScale,
+    inputs.imageQuality
+  );
 
   await renderer.initialize();
   return renderer;
