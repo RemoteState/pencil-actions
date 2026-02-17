@@ -68,11 +68,15 @@ That's it. Every PR that touches a `.pen` file will get a comment showing exactl
 
 ## Free to Use
 
-**1,000 screenshots per month, per repo. No API key needed.**
+| Tier | Screenshots/month per repo | How to get it |
+|------|---------------------------|---------------|
+| **Free** | 1,000 | Just add the action — no API key needed |
+| **Free with API key** | 5,000 | [Contact us](https://www.remotestate.com/contactus) to get a key |
+| **Free with demo** | 10,000 | [Show us](https://www.remotestate.com/contactus) a quick demo of your product, or just chat about what else we can build to make this tool even better |
 
-Authentication happens automatically via GitHub's OIDC tokens — just add `id-token: write` to your workflow permissions and you're set.
+Every tier is **free, forever**. We want every team using Pencil to have design review on every PR.
 
-Need more? [Talk to us](https://www.remotestate.com/contactus) about your project and get **10x more credits**. We'd love to hear what you're building.
+The base tier works automatically via GitHub's OIDC tokens — just add `id-token: write` to your workflow permissions and you're set. For higher limits, pass your API key via `service-api-key`.
 
 ## Configuration
 
@@ -167,7 +171,7 @@ Use `comment-id` to prevent workflows from overwriting each other:
 
 We built this at [RemoteState](https://www.remotestate.com/) because we think design review should be as easy as code review.
 
-Using Pen Design Review for your project? We'd love to hear about it. [Tell us what you're building](https://www.remotestate.com/contactus) and get **10,000 screenshots/month** — on us.
+Using Pen Design Review for your project? We'd love to hear about it. [Tell us what you're building](https://www.remotestate.com/contactus) and get up to **10,000 screenshots/month** — on us.
 
 - Have feedback or feature requests? [Open an issue](https://github.com/RemoteState/pencil-actions/issues)
 - Want to chat? [Contact us](https://www.remotestate.com/contactus)
