@@ -5,7 +5,6 @@
 import * as core from '@actions/core';
 import {
   ActionInputs,
-  RendererType,
   CommentMode,
   ImageFormat,
   ImageScale,
@@ -13,23 +12,17 @@ import {
 } from './types';
 
 export function getInputs(): ActionInputs {
-  const renderer = (core.getInput('renderer') || 'service') as RendererType;
   const serviceUrl = core.getInput('service-url');
   const serviceApiKey = core.getInput('service-api-key');
 
-  // Validate renderer configuration
-  if (renderer === 'service' && !serviceUrl) {
-    throw new Error(
-      'service-url is required when using the "service" renderer'
-    );
+  if (!serviceUrl) {
+    throw new Error('service-url is required');
   }
 
   const inputs: ActionInputs = {
     githubToken: core.getInput('github-token', { required: true }),
-    renderer: renderer,
     serviceUrl: serviceUrl || undefined,
     serviceApiKey: serviceApiKey || undefined,
-    outputDir: core.getInput('output-dir') || '.pencil-screenshots',
     commentMode: (core.getInput('comment-mode') as CommentMode) || 'update',
     commentId: core.getInput('comment-id') || '',
     uploadArtifacts: core.getBooleanInput('upload-artifacts'),
@@ -52,10 +45,6 @@ export function getInputs(): ActionInputs {
 export function validateInputs(inputs: ActionInputs): void {
   if (!inputs.githubToken) {
     throw new Error('github-token is required');
-  }
-
-  if (!['metadata', 'service'].includes(inputs.renderer)) {
-    throw new Error(`Invalid renderer: ${inputs.renderer}. Must be "service" or "metadata"`);
   }
 
   if (!['create', 'update', 'none'].includes(inputs.commentMode)) {

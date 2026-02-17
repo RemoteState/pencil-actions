@@ -4,10 +4,8 @@
 
 export interface ActionInputs {
   githubToken: string;
-  renderer: RendererType;
   serviceUrl?: string;      // URL for pencil-screenshot-service
   serviceApiKey?: string;   // API key for screenshot service
-  outputDir: string;
   commentMode: CommentMode;
   commentId: string;
   uploadArtifacts: boolean;
@@ -19,7 +17,6 @@ export interface ActionInputs {
   reviewMode: ReviewMode;
 }
 
-export type RendererType = 'metadata' | 'service';
 export type CommentMode = 'create' | 'update' | 'none';
 export type ImageFormat = 'png' | 'jpeg' | 'webp';
 export type ImageScale = 1 | 2 | 3;
@@ -77,6 +74,7 @@ export interface CommentData {
   summary: CommentSummary;
   prNumber: number;
   commitSha: string;
+  artifactUrl?: string;
 }
 
 export interface PenFileCommentData {
@@ -186,6 +184,7 @@ export interface DiffCommentData {
   summary: DiffCommentSummary;
   prNumber: number;
   commitSha: string;
+  artifactUrl?: string;
 }
 
 export interface DiffCommentSummary {

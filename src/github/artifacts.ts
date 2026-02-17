@@ -93,7 +93,7 @@ export function createArtifactsSummary(
     return '';
   }
 
-  return `\n\n📦 [View all screenshots (${fileCount} files)](${artifactUrl})`;
+  return `📦 [Download all screenshots (${fileCount} files)](${artifactUrl})`;
 }
 
 /**
