@@ -32,7 +32,7 @@ export function getTopLevelFrames(document: PenDocument): PenFrame[] {
 
   if (document.children) {
     for (const child of document.children) {
-      if (child.type === 'frame') {
+      if (child.type === 'frame' && !child.reusable) {
         frames.push({
           id: child.id,
           name: child.name || `Frame ${child.id}`,
