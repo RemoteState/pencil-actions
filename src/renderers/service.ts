@@ -90,8 +90,8 @@ export class ServiceRenderer extends BaseRenderer {
 
   /** Cache: penFilePath → Map<frameId, CachedFrame> */
   private cache = new Map<string, Map<string, CachedFrame>>();
-  /** Track which files have been sent to the API (even if they returned errors) */
-  private sentFiles = new Set<string>();
+  /** In-flight fetch promises to prevent duplicate API calls for the same file */
+  private fetchPromises = new Map<string, Promise<void>>();
 
   constructor(options: ServiceRendererOptions) {
     super();
@@ -146,10 +146,11 @@ export class ServiceRenderer extends BaseRenderer {
     outputPath: string
   ): Promise<ScreenshotResult> {
     try {
-      // Ensure the .pen file has been sent to the API
-      if (!this.sentFiles.has(penFilePath)) {
-        await this.fetchAllFrames(penFilePath);
+      // Ensure the .pen file has been sent to the API (deduped for parallel calls)
+      if (!this.fetchPromises.has(penFilePath)) {
+        this.fetchPromises.set(penFilePath, this.fetchAllFrames(penFilePath));
       }
+      await this.fetchPromises.get(penFilePath)!;
 
       // Look up cached result for this frame
       const fileCache = this.cache.get(penFilePath);
@@ -190,7 +191,7 @@ export class ServiceRenderer extends BaseRenderer {
 
   async cleanup(): Promise<void> {
     this.cache.clear();
-    this.sentFiles.clear();
+    this.fetchPromises.clear();
     this.authToken = undefined;
   }
 
@@ -287,8 +288,6 @@ export class ServiceRenderer extends BaseRenderer {
    * Submit the entire .pen file as an async job, then poll for completion.
    */
   private async fetchAllFrames(penFilePath: string): Promise<void> {
-    this.sentFiles.add(penFilePath);
-
     const penFileContent = fs.readFileSync(penFilePath, 'utf-8');
     const penFileBase64 = Buffer.from(penFileContent).toString('base64');
 

@@ -88,46 +88,31 @@ async function runFullMode(
   const renderer = await initializeRenderer(inputs);
 
   try {
-    // Process each file
-    const fileResults: PenFileCommentData[] = [];
-    let totalFramesRendered = 0;
-
     ensureScreenshotsDir(OUTPUT_DIR);
 
-    for (const file of changedFiles) {
+    // Process all files in parallel
+    const fileResults = await Promise.all(changedFiles.map(async (file): Promise<PenFileCommentData> => {
       core.info(`Processing: ${file.path}`);
 
       if (file.status === 'deleted') {
-        // For deleted files, just note they were deleted
-        fileResults.push({
-          path: file.path,
-          status: file.status,
-          frames: [],
-        });
-        continue;
+        return { path: file.path, status: file.status, frames: [] };
       }
 
       try {
-        // Parse the .pen file to get top-level frames (screens/artboards)
         const document = await loadPenDocument(file.path);
         const frames = getTopLevelFrames(document);
-
-        // Limit frames if configured
         const framesToProcess =
           inputs.maxFramesPerFile > 0
             ? frames.slice(0, inputs.maxFramesPerFile)
             : frames;
 
-        core.info(`Found ${frames.length} top-level frames, processing ${framesToProcess.length}`);
+        core.info(`[${path.basename(file.path)}] Found ${frames.length} top-level frames, processing ${framesToProcess.length}`);
 
-        // Render each frame
+        // Render frames (fetchAllFrames is called once per file, then images download from cache)
         const frameResults: FrameCommentData[] = [];
-
         for (const frame of framesToProcess) {
           const outputPath = getOutputPath(OUTPUT_DIR, file.path, frame, inputs.imageFormat);
-
           const result = await renderer.renderFrame(file.path, frame, outputPath);
-
           frameResults.push({
             id: frame.id,
             name: frame.name,
@@ -135,32 +120,26 @@ async function runFullMode(
             screenshotPath: result.success ? result.screenshotPath : undefined,
             error: result.error,
           });
-
-          if (result.success) {
-            totalFramesRendered++;
-          }
         }
 
-        fileResults.push({
-          path: file.path,
-          status: file.status,
-          frames: frameResults,
-        });
+        return { path: file.path, status: file.status, frames: frameResults };
       } catch (error) {
         core.warning(`Failed to process ${file.path}: ${error}`);
-        fileResults.push({
+        return {
           path: file.path,
           status: file.status,
-          frames: [
-            {
-              id: 'error',
-              name: 'Processing Error',
-              error: error instanceof Error ? error.message : 'Unknown error',
-            },
-          ],
-        });
+          frames: [{
+            id: 'error',
+            name: 'Processing Error',
+            error: error instanceof Error ? error.message : 'Unknown error',
+          }],
+        };
       }
-    }
+    }));
+
+    const totalFramesRendered = fileResults.reduce(
+      (sum, f) => sum + f.frames.filter(fr => !fr.error).length, 0
+    );
 
     // Upload screenshots as artifacts
     let artifactUrl: string | undefined;
@@ -221,58 +200,55 @@ async function runDiffMode(
   const renderer = await initializeRenderer(inputs) as ServiceRenderer;
 
   try {
-    const fileResults: DiffFileCommentData[] = [];
-    let totalFramesRendered = 0;
-
     ensureScreenshotsDir(OUTPUT_DIR);
 
-    for (const file of changedFiles) {
+    // Process all files in parallel
+    const rawResults = await Promise.all(changedFiles.map(async (file): Promise<DiffFileCommentData | null> => {
       core.info(`Processing (diff): ${file.path}`);
 
       if (file.status === 'deleted') {
-        if (inputs.includeDeleted) {
-          fileResults.push({ path: file.path, status: file.status });
-        }
-        continue;
+        return inputs.includeDeleted ? { path: file.path, status: file.status } : null;
       }
 
       try {
         if (file.status === 'modified' || file.status === 'renamed') {
-          // Fetch base version from the base branch via GitHub API
           const basePath = file.previousPath || file.path;
           const basePenBase64 = await getFileContentAtRef(octokit, basePath, prContext.baseSha);
 
           if (!basePenBase64) {
             core.warning(`Base version not found for ${file.path}, treating as added`);
             const frames = await renderFullFile(renderer, file, inputs);
-            fileResults.push({ path: file.path, status: 'added', frames });
-            totalFramesRendered += frames.filter(f => !f.error).length;
-            continue;
+            return { path: file.path, status: 'added' as const, frames };
           }
 
-          // Read head version from local checkout
           const headPenBase64 = readLocalFileAsBase64(file.path);
-
-          // Call diff endpoint
           core.info(`Submitting diff for ${file.path}...`);
           const diffResult = await renderer.fetchDiff(basePenBase64, headPenBase64);
-
-          fileResults.push({ path: file.path, status: file.status, diff: diffResult });
-          totalFramesRendered += diffResult.summary.added + (diffResult.summary.modified * 2);
+          return { path: file.path, status: file.status, diff: diffResult };
 
         } else if (file.status === 'added') {
-          // Added files: render all frames
           const frames = await renderFullFile(renderer, file, inputs);
-          fileResults.push({ path: file.path, status: file.status, frames });
-          totalFramesRendered += frames.filter(f => !f.error).length;
+          return { path: file.path, status: file.status, frames };
         }
+
+        return null;
       } catch (error) {
         core.warning(`Failed to process ${file.path}: ${error}`);
-        fileResults.push({
+        return {
           path: file.path,
           status: file.status,
           error: error instanceof Error ? error.message : 'Unknown error',
-        });
+        };
+      }
+    }));
+
+    const fileResults = rawResults.filter((r): r is DiffFileCommentData => r !== null);
+    let totalFramesRendered = 0;
+    for (const f of fileResults) {
+      if (f.diff) {
+        totalFramesRendered += f.diff.summary.added + (f.diff.summary.modified * 2);
+      } else if (f.frames) {
+        totalFramesRendered += f.frames.filter(fr => !fr.error).length;
       }
     }
 
