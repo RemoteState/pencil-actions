@@ -298,7 +298,7 @@ export function buildDiffComment(data: DiffCommentData, commentId?: string): str
   ];
 
   for (const file of data.files) {
-    lines.push(buildDiffFileSection(file));
+    lines.push(buildDiffFileSection(file, data.serviceUrl));
     lines.push('');
   }
 
@@ -345,7 +345,7 @@ function buildDiffSummarySection(summary: DiffCommentSummary): string {
 /**
  * Build section for a single file in diff mode.
  */
-function buildDiffFileSection(file: DiffFileCommentData): string {
+function buildDiffFileSection(file: DiffFileCommentData, serviceUrl?: string): string {
   const statusIcon = getStatusIcon(file.status);
   const statusLabel = getStatusLabel(file.status);
 
@@ -393,7 +393,14 @@ function buildDiffFileSection(file: DiffFileCommentData): string {
       lines.push('#### ✏️ Modified Frames');
       lines.push('');
       for (const mod of diff.modified) {
-        lines.push(`**${escapeMarkdown(mod.frameName)}**`);
+        const compareUrl = serviceUrl && file.diff?.jobId
+          ? `${serviceUrl}/compare/${file.diff.jobId}?frame=${encodeURIComponent(mod.frameName)}`
+          : null;
+        lines.push(
+          compareUrl
+            ? `**${escapeMarkdown(mod.frameName)}** · [View full screen](${compareUrl})`
+            : `**${escapeMarkdown(mod.frameName)}**`
+        );
         lines.push('');
         lines.push('<table>');
         lines.push('<tr><th>Before</th><th>After</th></tr>');

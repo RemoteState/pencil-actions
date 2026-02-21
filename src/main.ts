@@ -268,6 +268,7 @@ async function runDiffMode(
         prNumber: prContext.prNumber,
         commitSha: prContext.headSha,
         artifactUrl,
+        serviceUrl: inputs.serviceUrl,
       };
 
       const commentBody = buildDiffComment(commentData, inputs.commentId);

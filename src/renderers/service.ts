@@ -238,6 +238,7 @@ export class ServiceRenderer extends BaseRenderer {
 
     // Poll for completion (reuses existing polling logic)
     const result = await this.pollForCompletion(submitData.jobId) as DiffResponse;
+    result.jobId = submitData.jobId;
 
     if (result.errors && result.errors.length > 0) {
       for (const err of result.errors) {

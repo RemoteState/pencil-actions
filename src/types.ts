@@ -160,6 +160,7 @@ export interface DiffSummary {
 
 export interface DiffResponse {
   type: 'diff';
+  jobId?: string;
   success: boolean;
   summary: DiffSummary;
   added: DiffFrameScreenshot[];
@@ -185,6 +186,7 @@ export interface DiffCommentData {
   prNumber: number;
   commitSha: string;
   artifactUrl?: string;
+  serviceUrl?: string;
 }
 
 export interface DiffCommentSummary {
