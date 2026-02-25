@@ -1,5 +1,5 @@
 {
-  "name": "pencil-design-review-action",
+  "name": "pencil-actions",
   "version": "1.0.0",
   "description": "GitHub Action for visual design review of .pen files on PRs",
   "main": "dist/index.js",
