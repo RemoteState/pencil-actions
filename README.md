@@ -1,4 +1,4 @@
-# Pen Design Review
+# Pencil Actions
 
 Automatically preview `.pen` design files in pull requests. When design files change, this action detects what changed and posts screenshots directly in your PR — with before/after comparisons for modified frames.
 
@@ -170,7 +170,7 @@ Use `comment-id` to prevent workflows from overwriting each other:
 
 We built this at [RemoteState](https://www.remotestate.com/) because we think design review should be as easy as code review.
 
-Using Pen Design Review for your project? We'd love to hear about it. [Tell us what you're building](https://www.remotestate.com/contactus) and get up to **10,000 screenshots/month** — on us.
+Using Pencil Actions for your project? We'd love to hear about it. [Tell us what you're building](https://www.remotestate.com/contactus) and get up to **10,000 screenshots/month** — on us.
 
 - Have feedback or feature requests? [Open an issue](https://github.com/RemoteState/pencil-actions/issues)
 - Want to chat? [Contact us](https://www.remotestate.com/contactus)
