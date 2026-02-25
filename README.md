@@ -68,15 +68,15 @@ That's it. Every PR that touches a `.pen` file will get a comment showing exactl
 
 ## Free to Use
 
-| Tier | Screenshots/month per repo | How to get it |
-|------|---------------------------|---------------|
-| **Free** | 1,000 | Just add the action — no API key needed |
-| **Free with API key** | 5,000 | [Contact us](https://www.remotestate.com/contactus) to get a key |
-| **Free with demo** | 10,000 | [Show us](https://www.remotestate.com/contactus) a quick demo of your product, or just chat about what else we can build to make this tool even better |
+| Tier | Limit | Tracking | How to get it |
+|------|-------|----------|---------------|
+| **Free** | 1,000/mo | Per repo | Just add the action — no API key needed |
+| **Free + API key** | 5,000/mo | Per key | [Contact us](https://www.remotestate.com/contactus) to get a key |
+| **Free + demo** | 10,000/mo | Per key | [Show us your project](https://www.remotestate.com/contactus) |
 
 Every tier is **free, forever**. We want every team using Pencil to have design review on every PR.
 
-The base tier works automatically via GitHub's OIDC tokens — just add `id-token: write` to your workflow permissions and you're set. For higher limits, pass your API key via `service-api-key`.
+The base tier works automatically via GitHub's OIDC tokens — just add `id-token: write` to your workflow permissions. For higher limits, pass your API key via `service-api-key`.
 
 ## Configuration
 
