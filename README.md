@@ -169,6 +169,10 @@ Use `comment-id` to prevent workflows from overwriting each other:
 
 `.pen` files are design files created with [Pencil](https://pencil.dev) — a design tool for creating web and mobile interfaces. They're JSON-based, version-control friendly, and contain frames (screens/artboards) that this action renders as images.
 
+## Privacy
+
+Your `.pen` files are never stored. They're fetched directly from GitHub, rendered in memory, and discarded immediately after processing. Only the resulting screenshot images are cached temporarily (1 week) for PR comments.
+
 ## Talk to Us
 
 We built this at [RemoteState](https://www.remotestate.com/) because we think design review should be as easy as code review.
