@@ -1,5 +1,8 @@
 # Pencil Actions
 
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Pencil%20Actions-orange?logo=github)](https://github.com/marketplace/actions/pencil-actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 Automatically preview `.pen` design files in pull requests. When design files change, this action detects what changed and posts screenshots directly in your PR — with before/after comparisons for modified frames.
 
 **Code review, but for designs.**
