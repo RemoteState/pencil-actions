@@ -62,7 +62,7 @@ That's it. Every PR that touches a `.pen` file will get a comment showing exactl
 > **Dashboard**
 > | Before | After |
 > |--------|-------|
-> | ![before](screenshot) | ![after](screenshot) |
+> | ![before](assets/before.png) | ![after](assets/after.png) |
 >
 > <details><summary>6 unchanged frames</summary>
 >
