@@ -21,7 +21,6 @@ jobs:
         uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          renderer: service
           service-url: https://pencil.remotestate.com
           service-api-key: ${{ secrets.SCREENSHOT_API_KEY }}
           comment-id: test

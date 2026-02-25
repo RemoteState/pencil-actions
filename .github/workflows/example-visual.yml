@@ -1,6 +1,6 @@
 # Example: Visual Design Review (With Screenshots)
 # Uses the pencil-screenshot-service for high-fidelity rendering.
-# No API key needed — authenticates via GitHub OIDC (free tier: 100 screenshots/month).
+# No API key needed — authenticates via GitHub OIDC (free tier: 1,000 screenshots/month).
 
 name: Design Review (Visual)
 on:
@@ -24,7 +24,6 @@ jobs:
         uses: remotestate/pencil-actions@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          renderer: service
           service-url: https://pencil.remotestate.com
           review-mode: full
           comment-id: visual

@@ -1,5 +1,5 @@
 /**
- * Core type definitions for Pencil Design Review Action
+ * Core type definitions for Pencil Actions
  */
 
 export interface ActionInputs {

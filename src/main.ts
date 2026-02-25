@@ -1,5 +1,5 @@
 /**
- * Pencil Design Review GitHub Action
+ * Pencil Actions - GitHub Action
  *
  * Main entry point that orchestrates the design review workflow
  */
@@ -31,7 +31,7 @@ async function run(): Promise<void> {
     const inputs = getInputs();
     validateInputs(inputs);
 
-    core.info('🎨 Starting Pencil Design Review');
+    core.info('🎨 Starting Pencil Actions');
     core.info(`Review mode: ${inputs.reviewMode}`);
     core.info(`Comment mode: ${inputs.commentMode}`);
 
