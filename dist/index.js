@@ -1417,28 +1417,33 @@ function parseNumericValue(value) {
     return undefined;
 }
 /**
- * Get top-level frames only (screens/artboards)
- * These are typically the main design screens
+ * Get all frames from the document (recursive).
+ * Searches all nesting levels - frames inside groups are also included.
  */
 function getTopLevelFrames(document) {
     const frames = [];
-    if (document.children) {
-        for (const child of document.children) {
-            if (child.type === 'frame' && !child.reusable) {
-                frames.push({
-                    id: child.id,
-                    name: child.name || `Frame ${child.id}`,
-                    type: child.type,
-                    width: parseNumericValue(child.width),
-                    height: parseNumericValue(child.height),
-                    x: child.x,
-                    y: child.y,
-                    reusable: child.reusable,
-                });
-            }
-        }
-    }
+    collectFrames(document.children, frames);
     return frames;
+}
+function collectFrames(children, frames) {
+    if (!children)
+        return;
+    for (const child of children) {
+        if (child.type === 'frame' && !child.reusable) {
+            frames.push({
+                id: child.id,
+                name: child.name || `Frame ${child.id}`,
+                type: child.type,
+                width: parseNumericValue(child.width),
+                height: parseNumericValue(child.height),
+                x: child.x,
+                y: child.y,
+                reusable: child.reusable,
+            });
+        }
+        // Recurse into nested children (groups, components, etc.)
+        collectFrames(child.children, frames);
+    }
 }
 /**
  * Load and validate a .pen file

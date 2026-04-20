@@ -7,7 +7,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { PenDocument, PenFrame } from './types';
+import { PenDocument, PenFrame, PenNode } from './types';
 
 /**
  * Parse a numeric value that might be a number or a string (e.g., "fill_container")
@@ -24,30 +24,33 @@ function parseNumericValue(value: unknown): number | undefined {
 }
 
 /**
- * Get top-level frames only (screens/artboards)
- * These are typically the main design screens
+ * Get all frames from the document (recursive).
+ * Searches all nesting levels - frames inside groups are also included.
  */
 export function getTopLevelFrames(document: PenDocument): PenFrame[] {
   const frames: PenFrame[] = [];
-
-  if (document.children) {
-    for (const child of document.children) {
-      if (child.type === 'frame' && !child.reusable) {
-        frames.push({
-          id: child.id,
-          name: child.name || `Frame ${child.id}`,
-          type: child.type,
-          width: parseNumericValue(child.width),
-          height: parseNumericValue(child.height),
-          x: child.x,
-          y: child.y,
-          reusable: child.reusable,
-        });
-      }
-    }
-  }
-
+  collectFrames(document.children, frames);
   return frames;
+}
+
+function collectFrames(children: PenNode[] | undefined, frames: PenFrame[]): void {
+  if (!children) return;
+  for (const child of children) {
+    if (child.type === 'frame' && !child.reusable) {
+      frames.push({
+        id: child.id,
+        name: child.name || `Frame ${child.id}`,
+        type: child.type,
+        width: parseNumericValue(child.width),
+        height: parseNumericValue(child.height),
+        x: child.x,
+        y: child.y,
+        reusable: child.reusable,
+      });
+    }
+    // Recurse into nested children (groups, components, etc.)
+    collectFrames(child.children, frames);
+  }
 }
 
 /**
